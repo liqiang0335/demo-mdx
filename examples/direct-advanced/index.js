@@ -33,12 +33,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const createAdvancedComponents = () => {
   // 自定义引用块组件
   const Quote = (props) => React.createElement('blockquote', {
-    style: {
-      borderLeft: '4px solid #ccc',
-      paddingLeft: '16px',
-      fontStyle: 'italic',
-      margin: '16px 0'
-    }
+    className: 'myapp-quote',
+    style: { borderLeft: '4px solid #ccc', paddingLeft: '16px', fontStyle: 'italic', margin: '16px 0' }
   }, props.children);
 
   // 自定义代码块组件，增加Prism高亮支持
@@ -60,39 +56,23 @@ const createAdvancedComponents = () => {
     }
 
     return React.createElement('div', {
-      style: {
-        backgroundColor: '#282c34', // 深色背景
-        padding: '16px',
-        borderRadius: '4px',
-        overflow: 'auto',
-        margin: '16px 0'
-      }
+      className: 'myapp-code-block',
+      style: { backgroundColor: '#282c34', padding: '16px', borderRadius: '4px', overflow: 'auto', margin: '16px 0' }
     }, [
       React.createElement('div', {
         key: 'language',
-        style: {
-          fontSize: '12px',
-          color: '#9ca3af',
-          marginBottom: '8px',
-          fontFamily: 'monospace'
-        }
+        className: 'myapp-code-block-language',
+        style: { fontSize: '12px', color: '#9ca3af', marginBottom: '8px', fontFamily: 'monospace' }
       }, language),
       React.createElement('pre', {
         key: 'content',
-        style: {
-          margin: 0,
-          fontFamily: 'monospace',
-          fontSize: '14px',
-          lineHeight: '1.5'
-        }
+        className: 'myapp-code-block-content',
+        style: { margin: 0, fontFamily: 'monospace', fontSize: '14px', lineHeight: '1.5' }
       },
         React.createElement('code', {
           className: `language-${language}`,
           dangerouslySetInnerHTML: { __html: highlightedCode },
-          style: {
-            display: 'block',
-            color: '#e5e7eb'
-          }
+          style: { display: 'block', color: '#e5e7eb' }
         }))
     ]);
   };
@@ -107,11 +87,9 @@ const createAdvancedComponents = () => {
     };
 
     return (props) => React.createElement('div', {
+      className: 'myapp-admonition',
       style: {
-        padding: '12px 20px',
-        borderLeft: '4px solid',
-        margin: '16px 0',
-        borderRadius: '3px',
+        padding: '12px 20px', borderLeft: '4px solid', margin: '16px 0', borderRadius: '3px',
         ...styles[props.type || type]
       }
     }, props.children);
@@ -120,33 +98,34 @@ const createAdvancedComponents = () => {
   return {
     // HTML 元素映射
     h1: (props) => React.createElement('h1', {
+      className: 'myapp-h1',
       style: { color: 'darkblue', borderBottom: '1px solid #eee' },
       ...props
     }, props.children),
 
     h2: (props) => React.createElement('h2', {
+      className: 'myapp-h2',
       style: { color: 'darkgreen' },
       ...props
     }, props.children),
 
     h3: (props) => React.createElement('h3', {
+      className: 'myapp-h3',
       style: { color: 'darkred' },
       ...props
     }, props.children),
 
     p: (props) => React.createElement('p', {
+      className: 'myapp-p',
       style: { lineHeight: '1.6' },
       ...props
     }, props.children),
 
     // 链接组件
     a: (props) => React.createElement('a', {
+      className: 'myapp-a',
       href: props.href,
-      style: {
-        color: '#0077cc',
-        textDecoration: 'none',
-        borderBottom: '1px dashed #0077cc'
-      },
+      style: { color: '#0077cc', textDecoration: 'none', borderBottom: '1px dashed #0077cc' },
       target: "_blank",
       rel: "noopener noreferrer"
     }, props.children),
@@ -159,6 +138,7 @@ const createAdvancedComponents = () => {
       // 内联代码
       if (!props.className) {
         return React.createElement('code', {
+          className: 'myapp-inlincode',
           style: { backgroundColor: '#f0f0f0', padding: '2px 4px', borderRadius: '3px' },
           ...props
         }, props.children);
@@ -169,25 +149,17 @@ const createAdvancedComponents = () => {
 
     // 自定义组件
     Wrapper: (props) => React.createElement('div', {
-      style: {
-        border: '1px solid #ccc',
-        padding: '10px',
-        borderRadius: '5px',
-        margin: '10px 0'
-      }
+      className: 'myapp-wrapper',
+      style: { border: '1px solid #ccc', padding: '10px', borderRadius: '5px', margin: '10px 0' }
     }, props.children),
 
     Highlight: (props) => React.createElement('div', {
-      style: {
-        backgroundColor: 'yellow',
-        padding: '10px',
-        borderRadius: '5px',
-        margin: '10px 0'
-      }
+      className: 'myapp-highlight',
+      style: { backgroundColor: 'yellow', padding: '10px', borderRadius: '5px', margin: '10px 0' }
     }, props.children),
 
     // 自定义警告组件
-    CustomAlert: (props) => {
+    Admonition: (props) => {
       const CustomAlertComponent = createCustomAlert(props.type);
       return React.createElement(CustomAlertComponent, props, props.children);
     }
