@@ -8,7 +8,15 @@
 ## 提示词
 
 ```text
-:::tip
+将 tip 包裹的内容转换为 myapp-admonition 组件包裹, 示例:
 
+:::tip
+{内容}
 :::
+
+转换为
+
+<Admonition type="tip">
+{内容}
+</Admonition>
 ```
