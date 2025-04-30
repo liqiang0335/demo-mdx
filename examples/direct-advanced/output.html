@@ -101,15 +101,15 @@
           </style>
         </head>
         <body>
-          <div class="container"><div class="top-block"><p class="myapp-p">数据库事务指的是一系列读/写操作，这些操作被<em>保证</em>要么作为一个整体成功，要么作为一个整体失败。本节描述了 Prisma Client API 支持事务的方式。</p></div>
+          <div class="myapp-container"><div class="top-block"><p class="myapp-p">数据库事务指的是一系列读/写操作，这些操作被<em>保证</em>要么作为一个整体成功，要么作为一个整体失败。本节描述了 Prisma Client API 支持事务的方式。</p></div>
 <h2 class="myapp-h2">事务概述</h2>
 <div class="myapp-admonition info"><p class="myapp-p">在 Prisma ORM 版本 4.4.0 之前，您无法在事务上设置隔离级别。数据库配置中的隔离级别始终适用。</p></div>
 <p class="myapp-p">开发人员通过将操作包装在事务中来利用数据库提供的安全保证。这些保证通常使用 ACID 首字母缩略词来概括：</p>
-<ul>
-<li><strong>原子性（Atomic）</strong>: 确保事务的所有操作要么<em>全部</em>成功，要么<em>全部</em>失败。事务要么成功<em>提交</em>，要么<em>中止</em>并<em>回滚</em>。</li>
-<li><strong>一致性（Consistent）</strong>: 确保事务前后数据库的状态都是<em>有效的</em>（即，关于数据的任何现有不变性都得以维护）。</li>
-<li><strong>隔离性（Isolated）</strong>: 确保并发运行的事务具有与它们串行运行时相同的效果。</li>
-<li><strong>持久性（Durability）</strong>: 确保事务成功后，任何写入都将被持久存储。</li>
+<ul class="myapp-ul">
+<li class="myapp-li"><strong>原子性（Atomic）</strong>: 确保事务的所有操作要么<em>全部</em>成功，要么<em>全部</em>失败。事务要么成功<em>提交</em>，要么<em>中止</em>并<em>回滚</em>。</li>
+<li class="myapp-li"><strong>一致性（Consistent）</strong>: 确保事务前后数据库的状态都是<em>有效的</em>（即，关于数据的任何现有不变性都得以维护）。</li>
+<li class="myapp-li"><strong>隔离性（Isolated）</strong>: 确保并发运行的事务具有与它们串行运行时相同的效果。</li>
+<li class="myapp-li"><strong>持久性（Durability）</strong>: 确保事务成功后，任何写入都将被持久存储。</li>
 </ul>
 <p class="myapp-p">虽然这些属性中的每一个都有很多模糊性和细微差别（例如，一致性实际上可以被认为是<em>应用层面的责任</em>而不是数据库属性，或者隔离性通常以更强和更弱的<em>隔离级别</em>来保证），但总的来说，它们为开发人员在考虑数据库事务时的期望提供了一个良好的高级指导。</p>
 <blockquote class="myapp-quote">
@@ -123,13 +123,13 @@
 </blockquote>
 <h2 class="myapp-h2">关于 Prisma Client 中的事务</h2>
 <p class="myapp-p">Prisma Client 提供了以下使用事务的选项：</p>
-<ul>
-<li><a class="myapp-a" href="#nested-writes" target="_blank" rel="noopener noreferrer">嵌套写入</a>：使用 Prisma Client API 在同一事务内处理对一个或多个相关记录的多个操作。</li>
-<li><a class="myapp-a" href="#batchbulk-operations" target="_blank" rel="noopener noreferrer">批量操作</a>：使用 <code class="myapp-inlincode">updateMany</code>、<code class="myapp-inlincode">deleteMany</code> 和 <code class="myapp-inlincode">createMany</code> 批量处理一个或多个操作。</li>
-<li>Prisma Client 中的 <code class="myapp-inlincode">$transaction</code> API：<!-- -->
-<ul>
-<li><a class="myapp-a" href="#sequential-prisma-client-operations" target="_blank" rel="noopener noreferrer">顺序操作</a>：传递一个 Prisma Client 查询数组，这些查询将在事务内按顺序执行，使用 <code class="myapp-inlincode">$transaction&lt;R&gt;(queries: PrismaPromise&lt;R&gt;[]): Promise&lt;R[]&gt;</code>。</li>
-<li><a class="myapp-a" href="#interactive-transactions" target="_blank" rel="noopener noreferrer">交互式事务</a>：传递一个可以包含用户代码（包括 Prisma Client 查询、非 Prisma 代码和其他控制流）的函数，该函数将在事务中执行，使用 <code class="myapp-inlincode">$transaction&lt;R&gt;(fn: (prisma: PrismaClient) =&gt; R, options?: object): R</code>。</li>
+<ul class="myapp-ul">
+<li class="myapp-li"><a class="myapp-a" href="#nested-writes" target="_blank" rel="noopener noreferrer">嵌套写入</a>：使用 Prisma Client API 在同一事务内处理对一个或多个相关记录的多个操作。</li>
+<li class="myapp-li"><a class="myapp-a" href="#batchbulk-operations" target="_blank" rel="noopener noreferrer">批量操作</a>：使用 <code class="myapp-inlincode">updateMany</code>、<code class="myapp-inlincode">deleteMany</code> 和 <code class="myapp-inlincode">createMany</code> 批量处理一个或多个操作。</li>
+<li class="myapp-li">Prisma Client 中的 <code class="myapp-inlincode">$transaction</code> API：<!-- -->
+<ul class="myapp-ul">
+<li class="myapp-li"><a class="myapp-a" href="#sequential-prisma-client-operations" target="_blank" rel="noopener noreferrer">顺序操作</a>：传递一个 Prisma Client 查询数组，这些查询将在事务内按顺序执行，使用 <code class="myapp-inlincode">$transaction&lt;R&gt;(queries: PrismaPromise&lt;R&gt;[]): Promise&lt;R[]&gt;</code>。</li>
+<li class="myapp-li"><a class="myapp-a" href="#interactive-transactions" target="_blank" rel="noopener noreferrer">交互式事务</a>：传递一个可以包含用户代码（包括 Prisma Client 查询、非 Prisma 代码和其他控制流）的函数，该函数将在事务中执行，使用 <code class="myapp-inlincode">$transaction&lt;R&gt;(fn: (prisma: PrismaClient) =&gt; R, options?: object): R</code>。</li>
 </ul>
 </li>
 </ul>
@@ -162,24 +162,24 @@
 </code></pre></div></pre>
 <h2 class="myapp-h2">批量操作 (Batch/bulk operations)</h2>
 <p class="myapp-p">以下批量操作作为事务运行：</p>
-<ul>
-<li><code class="myapp-inlincode">createMany()</code></li>
-<li><code class="myapp-inlincode">createManyAndReturn()</code></li>
-<li><code class="myapp-inlincode">updateMany()</code></li>
-<li><code class="myapp-inlincode">updateManyAndReturn()</code></li>
-<li><code class="myapp-inlincode">deleteMany()</code></li>
+<ul class="myapp-ul">
+<li class="myapp-li"><code class="myapp-inlincode">createMany()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">createManyAndReturn()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">updateMany()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">updateManyAndReturn()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">deleteMany()</code></li>
 </ul>
 <blockquote class="myapp-quote">
 <p class="myapp-p">请参考关于<a class="myapp-a" href="#bulk-operations" target="_blank" rel="noopener noreferrer">批量操作</a>的部分以获取更多示例。</p>
 </blockquote>
 <h2 class="myapp-h2"><code class="myapp-inlincode">$transaction</code> API</h2>
 <p class="myapp-p"><code class="myapp-inlincode">$transaction</code> API 可以通过两种方式使用：</p>
-<ul>
-<li>
+<ul class="myapp-ul">
+<li class="myapp-li">
 <p class="myapp-p"><a class="myapp-a" href="#sequential-prisma-client-operations" target="_blank" rel="noopener noreferrer">顺序操作</a>：传递一个 Prisma Client 查询数组，这些查询将在事务内按顺序执行。</p>
 <p class="myapp-p"><code class="myapp-inlincode">$transaction&lt;R&gt;(queries: PrismaPromise&lt;R&gt;[]): Promise&lt;R[]&gt;</code></p>
 </li>
-<li>
+<li class="myapp-li">
 <p class="myapp-p"><a class="myapp-a" href="#interactive-transactions" target="_blank" rel="noopener noreferrer">交互式事务</a>：传递一个可以包含用户代码（包括 Prisma Client 查询、非 Prisma 代码和其他控制流）的函数，该函数将在事务中执行。</p>
 <p class="myapp-p"><code class="myapp-inlincode">$transaction&lt;R&gt;(fn: (prisma: PrismaClient) =&gt; R): R</code></p>
 </li>
@@ -225,8 +225,8 @@
 <p class="myapp-p">请参考关于<a class="myapp-a" href="#transaction-api" target="_blank" rel="noopener noreferrer">事务 API</a>的部分以获取更多示例。</p>
 </blockquote>
 <p class="myapp-p">从版本 4.4.0 开始，顺序操作事务 API 有第二个参数。您可以在此参数中使用以下可选配置选项：</p>
-<ul>
-<li><code class="myapp-inlincode">isolationLevel</code>：设置<a class="myapp-a" href="#transaction-isolation-level" target="_blank" rel="noopener noreferrer">事务隔离级别</a>。默认情况下，这被设置为您数据库当前配置的值。</li>
+<ul class="myapp-ul">
+<li class="myapp-li"><code class="myapp-inlincode">isolationLevel</code>：设置<a class="myapp-a" href="#transaction-isolation-level" target="_blank" rel="noopener noreferrer">事务隔离级别</a>。默认情况下，这被设置为您数据库当前配置的值。</li>
 </ul>
 <p class="myapp-p">例如：</p>
 <pre><div class="myapp-code-block"><div class="myapp-code-block-language">ts</div><pre class="myapp-code-block-content"><code class="language-ts"><span class="token keyword">await</span> prisma<span class="token punctuation">.</span><span class="token function">$transaction</span><span class="token punctuation">(</span>
@@ -250,9 +250,9 @@
 <p class="myapp-p">让我们看一个例子：</p>
 <p class="myapp-p">假设您正在构建一个在线银行系统。要执行的操作之一是从一个人向另一个人转账。</p>
 <p class="myapp-p">作为经验丰富的开发人员，我们希望确保在转账过程中，</p>
-<ul>
-<li>金额不会消失</li>
-<li>金额不会被加倍</li>
+<ul class="myapp-ul">
+<li class="myapp-li">金额不会消失</li>
+<li class="myapp-li">金额不会被加倍</li>
 </ul>
 <p class="myapp-p">这是一个非常适合使用交互式事务的用例，因为我们需要在写入之间执行逻辑来检查余额。</p>
 <p class="myapp-p">在下面的示例中，Alice 和 Bob 的账户各有 100 美元。如果他们试图发送超过他们拥有的金额，转账将被拒绝。</p>
@@ -317,10 +317,10 @@
 </code></pre></div></pre>
 <h4>事务选项</h4>
 <p class="myapp-p">事务 API 有第二个参数。对于交互式事务，您可以在此参数中使用以下可选配置选项：</p>
-<ul>
-<li><code class="myapp-inlincode">maxWait</code>：Prisma Client 从数据库获取事务连接的最长等待时间。默认值为 2 秒。</li>
-<li><code class="myapp-inlincode">timeout</code>：交互式事务在被取消和回滚之前可以运行的最长时间。默认值为 5 秒。</li>
-<li><code class="myapp-inlincode">isolationLevel</code>：设置<a class="myapp-a" href="#transaction-isolation-level" target="_blank" rel="noopener noreferrer">事务隔离级别</a>。默认情况下，这被设置为您数据库当前配置的值。</li>
+<ul class="myapp-ul">
+<li class="myapp-li"><code class="myapp-inlincode">maxWait</code>：Prisma Client 从数据库获取事务连接的最长等待时间。默认值为 2 秒。</li>
+<li class="myapp-li"><code class="myapp-inlincode">timeout</code>：交互式事务在被取消和回滚之前可以运行的最长时间。默认值为 5 秒。</li>
+<li class="myapp-li"><code class="myapp-inlincode">isolationLevel</code>：设置<a class="myapp-a" href="#transaction-isolation-level" target="_blank" rel="noopener noreferrer">事务隔离级别</a>。默认情况下，这被设置为您数据库当前配置的值。</li>
 </ul>
 <p class="myapp-p">例如：</p>
 <pre><div class="myapp-code-block"><div class="myapp-code-block-language">ts</div><pre class="myapp-code-block-content"><code class="language-ts"><span class="token keyword">await</span> prisma<span class="token punctuation">.</span><span class="token function">$transaction</span><span class="token punctuation">(</span>
@@ -373,12 +373,12 @@
 </code></pre></div></pre>
 <h4>支持的隔离级别</h4>
 <p class="myapp-p">如果底层数据库支持，Prisma Client 支持以下隔离级别：</p>
-<ul>
-<li><code class="myapp-inlincode">ReadUncommitted</code>（读未提交）</li>
-<li><code class="myapp-inlincode">ReadCommitted</code>（读已提交）</li>
-<li><code class="myapp-inlincode">RepeatableRead</code>（可重复读）</li>
-<li><code class="myapp-inlincode">Snapshot</code>（快照）</li>
-<li><code class="myapp-inlincode">Serializable</code>（串行化）</li>
+<ul class="myapp-ul">
+<li class="myapp-li"><code class="myapp-inlincode">ReadUncommitted</code>（读未提交）</li>
+<li class="myapp-li"><code class="myapp-inlincode">ReadCommitted</code>（读已提交）</li>
+<li class="myapp-li"><code class="myapp-inlincode">RepeatableRead</code>（可重复读）</li>
+<li class="myapp-li"><code class="myapp-inlincode">Snapshot</code>（快照）</li>
+<li class="myapp-li"><code class="myapp-inlincode">Serializable</code>（串行化）</li>
 </ul>
 <p class="myapp-p">每个数据库连接器可用的隔离级别如下：</p>
 <table><thead><tr><th>数据库</th><th><code class="myapp-inlincode">ReadUncommitted</code></th><th><code class="myapp-inlincode">ReadCommitted</code></th><th><code class="myapp-inlincode">RepeatableRead</code></th><th><code class="myapp-inlincode">Snapshot</code></th><th><code class="myapp-inlincode">Serializable</code></th></tr></thead><tbody><tr><td>PostgreSQL</td><td>✔️</td><td>✔️</td><td>✔️</td><td>否</td><td>✔️</td></tr><tr><td>MySQL</td><td>✔️</td><td>✔️</td><td>✔️</td><td>否</td><td>✔️</td></tr><tr><td>SQL Server</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td></tr><tr><td>CockroachDB</td><td>否</td><td>否</td><td>否</td><td>否</td><td>✔️</td></tr><tr><td>SQLite</td><td>否</td><td>否</td><td>否</td><td>否</td><td>✔️</td></tr></tbody></table>
@@ -387,32 +387,32 @@
 <table><thead><tr><th>数据库</th><th>默认</th></tr></thead><tbody><tr><td>PostgreSQL</td><td><code class="myapp-inlincode">ReadCommitted</code></td></tr><tr><td>MySQL</td><td><code class="myapp-inlincode">RepeatableRead</code></td></tr><tr><td>SQL Server</td><td><code class="myapp-inlincode">ReadCommitted</code></td></tr><tr><td>CockroachDB</td><td><code class="myapp-inlincode">Serializable</code></td></tr><tr><td>SQLite</td><td><code class="myapp-inlincode">Serializable</code></td></tr></tbody></table>
 <h4>关于隔离级别的数据库特定信息</h4>
 <p class="myapp-p">请参阅以下资源：</p>
-<ul>
-<li><a class="myapp-a" href="https://www.postgresql.org/docs/9.3/runtime-config-client.html#GUC-DEFAULT-TRANSACTION-ISOLATION" target="_blank" rel="noopener noreferrer">PostgreSQL 中的事务隔离级别</a></li>
-<li><a class="myapp-a" href="https://learn.microsoft.com/zh-cn/sql/t-sql/statements/set-transaction-isolation-level-transact-sql?view=sql-server-ver15" target="_blank" rel="noopener noreferrer">Microsoft SQL Server 中的事务隔离级别</a></li>
-<li><a class="myapp-a" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html" target="_blank" rel="noopener noreferrer">MySQL 中的事务隔离级别</a></li>
+<ul class="myapp-ul">
+<li class="myapp-li"><a class="myapp-a" href="https://www.postgresql.org/docs/9.3/runtime-config-client.html#GUC-DEFAULT-TRANSACTION-ISOLATION" target="_blank" rel="noopener noreferrer">PostgreSQL 中的事务隔离级别</a></li>
+<li class="myapp-li"><a class="myapp-a" href="https://learn.microsoft.com/zh-cn/sql/t-sql/statements/set-transaction-isolation-level-transact-sql?view=sql-server-ver15" target="_blank" rel="noopener noreferrer">Microsoft SQL Server 中的事务隔离级别</a></li>
+<li class="myapp-li"><a class="myapp-a" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html" target="_blank" rel="noopener noreferrer">MySQL 中的事务隔离级别</a></li>
 </ul>
 <p class="myapp-p">CockroachDB 和 SQLite 仅支持 <code class="myapp-inlincode">Serializable</code> 隔离级别。</p>
 <h3 class="myapp-h3">事务时序问题 (Transaction timing issues)</h3>
-<div class="myapp-admonition info"><ul>
-<li>本节中的解决方案不适用于 MongoDB，因为 MongoDB 不支持<a class="myapp-a" href="https://www.prisma.io/dataguide/intro/database-glossary#isolation-levels" target="_blank" rel="noopener noreferrer">隔离级别</a>。</li>
-<li>本节讨论的时序问题不适用于 CockroachDB 和 SQLite，因为这些数据库仅支持最高的 <code class="myapp-inlincode">Serializable</code> 隔离级别。</li>
+<div class="myapp-admonition info"><ul class="myapp-ul">
+<li class="myapp-li">本节中的解决方案不适用于 MongoDB，因为 MongoDB 不支持<a class="myapp-a" href="https://www.prisma.io/dataguide/intro/database-glossary#isolation-levels" target="_blank" rel="noopener noreferrer">隔离级别</a>。</li>
+<li class="myapp-li">本节讨论的时序问题不适用于 CockroachDB 和 SQLite，因为这些数据库仅支持最高的 <code class="myapp-inlincode">Serializable</code> 隔离级别。</li>
 </ul></div>
 <p class="myapp-p">当两个或多个事务在某些<a class="myapp-a" href="https://www.prisma.io/dataguide/intro/database-glossary#isolation-levels" target="_blank" rel="noopener noreferrer">隔离级别</a>下并发运行时，时序问题可能导致写入冲突或死锁，例如违反唯一约束。例如，考虑以下事件序列，其中事务 A 和事务 B 都尝试执行 <code class="myapp-inlincode">deleteMany</code> 和 <code class="myapp-inlincode">createMany</code> 操作：</p>
-<ol>
-<li>事务 B：<code class="myapp-inlincode">createMany</code> 操作创建一组新行。</li>
-<li>事务 B：应用程序提交事务 B。</li>
-<li>事务 A：<code class="myapp-inlincode">createMany</code> 操作。</li>
-<li>事务 A：应用程序提交事务 A。新行与事务 B 在步骤 2 中添加的行发生冲突。</li>
+<ol class="myapp-ol">
+<li class="myapp-li">事务 B：<code class="myapp-inlincode">createMany</code> 操作创建一组新行。</li>
+<li class="myapp-li">事务 B：应用程序提交事务 B。</li>
+<li class="myapp-li">事务 A：<code class="myapp-inlincode">createMany</code> 操作。</li>
+<li class="myapp-li">事务 A：应用程序提交事务 A。新行与事务 B 在步骤 2 中添加的行发生冲突。</li>
 </ol>
 <p class="myapp-p">这种冲突可能发生在 <code class="myapp-inlincode">ReadCommitted</code> 隔离级别，这是 PostgreSQL 和 Microsoft SQL Server 中的默认隔离级别。为了避免这个问题，您可以设置更高的隔离级别（<code class="myapp-inlincode">RepeatableRead</code> 或 <code class="myapp-inlincode">Serializable</code>）。您可以在事务上设置隔离级别。这将覆盖该事务的数据库隔离级别。</p>
 <p class="myapp-p">要避免事务写入冲突和死锁：</p>
-<ol>
-<li>
+<ol class="myapp-ol">
+<li class="myapp-li">
 <p class="myapp-p">在您的事务上，使用 <code class="myapp-inlincode">isolationLevel</code> 参数设置为 <code class="myapp-inlincode">Prisma.TransactionIsolationLevel.Serializable</code>。</p>
 <p class="myapp-p">这确保您的应用程序提交多个并发或并行事务时，其效果如同它们是串行运行一样。当事务因写入冲突或死锁而失败时，Prisma Client 返回 <a class="myapp-a" href="/orm/reference/error-reference#p2034" target="_blank" rel="noopener noreferrer">P2034 错误</a>。</p>
 </li>
-<li>
+<li class="myapp-li">
 <p class="myapp-p">在您的应用程序代码中，围绕您的事务添加重试逻辑以处理任何 P2034 错误，如此示例所示：</p>
 <pre><div class="myapp-code-block"><div class="myapp-code-block-language">ts</div><pre class="myapp-code-block-content"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> Prisma<span class="token punctuation">,</span> PrismaClient <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@prisma/client'</span>
 
@@ -478,20 +478,20 @@
 </code></pre></div></pre>
 <p class="myapp-p">这可能与直觉相反，因为 <code class="myapp-inlincode">Promise.all()</code> 通常会<em>并行化</em>传递给它的调用。</p>
 <p class="myapp-p">这种行为的原因是：</p>
-<ul>
-<li>一个事务意味着其中的所有查询都必须在同一个连接上运行。</li>
-<li>一个数据库连接一次只能执行一个查询。</li>
-<li>由于一个查询在工作时会阻塞连接，将事务放入 <code class="myapp-inlincode">Promise.all</code> 实际上意味着查询应该一个接一个地运行。</li>
+<ul class="myapp-ul">
+<li class="myapp-li">一个事务意味着其中的所有查询都必须在同一个连接上运行。</li>
+<li class="myapp-li">一个数据库连接一次只能执行一个查询。</li>
+<li class="myapp-li">由于一个查询在工作时会阻塞连接，将事务放入 <code class="myapp-inlincode">Promise.all</code> 实际上意味着查询应该一个接一个地运行。</li>
 </ul>
 <h2 class="myapp-h2">依赖写入 (Dependent writes)</h2>
 <p class="myapp-p">写入被认为是<strong>相互依赖</strong>的，如果：</p>
-<ul>
-<li>操作依赖于先前操作的结果（例如，数据库生成 ID）</li>
+<ul class="myapp-ul">
+<li class="myapp-li">操作依赖于先前操作的结果（例如，数据库生成 ID）</li>
 </ul>
 <p class="myapp-p">最常见的场景是创建一个记录并使用生成的 ID 来创建或更新相关记录。示例包括：</p>
-<ul>
-<li>创建一个用户和两篇相关的博客文章（一对多关系）- 在创建博客文章之前必须知道作者 ID</li>
-<li>创建一个团队并分配成员（多对多关系）- 在分配成员之前必须知道团队 ID</li>
+<ul class="myapp-ul">
+<li class="myapp-li">创建一个用户和两篇相关的博客文章（一对多关系）- 在创建博客文章之前必须知道作者 ID</li>
+<li class="myapp-li">创建一个团队并分配成员（多对多关系）- 在分配成员之前必须知道团队 ID</li>
 </ul>
 <p class="myapp-p">依赖写入必须一起成功才能维护数据一致性并防止意外行为，例如没有作者的博客文章或没有成员的团队。</p>
 <h3 class="myapp-h3">嵌套写入 (Nested writes)</h3>
@@ -511,30 +511,30 @@
 <p class="myapp-p">如果任何操作失败，Prisma Client 将回滚整个事务。嵌套写入目前不受顶级批量操作（如 <code class="myapp-inlincode">client.user.deleteMany</code> 和 <code class="myapp-inlincode">client.user.updateMany</code>）的支持。</p>
 <h4>何时使用嵌套写入</h4>
 <p class="myapp-p">如果满足以下条件，请考虑使用嵌套写入：</p>
-<ul>
-<li>✔ 您想同时创建两个或多个通过 ID 关联的记录（例如，创建一篇博客文章和一个用户）</li>
-<li>✔ 您想同时更新和创建通过 ID 关联的记录（例如，更改用户名称并创建一篇新的博客文章）</li>
+<ul class="myapp-ul">
+<li class="myapp-li">✔ 您想同时创建两个或多个通过 ID 关联的记录（例如，创建一篇博客文章和一个用户）</li>
+<li class="myapp-li">✔ 您想同时更新和创建通过 ID 关联的记录（例如，更改用户名称并创建一篇新的博客文章）</li>
 </ul>
 <p class="myapp-p">:::tip</p>
 <p class="myapp-p">如果您<a class="myapp-a" href="#scenario-pre-computed-ids-and-the-transaction-api" target="_blank" rel="noopener noreferrer">预先计算您的 ID，您可以在嵌套写入或使用 <code class="myapp-inlincode">$transaction([])</code> API 之间进行选择</a>。</p>
 <p class="myapp-p">:::</p>
 <h4>场景：注册流程</h4>
 <p class="myapp-p">考虑 Slack 的注册流程，该流程：</p>
-<ol>
-<li>创建一个团队</li>
-<li>向该团队添加一个用户，该用户自动成为该团队的管理员</li>
+<ol class="myapp-ol">
+<li class="myapp-li">创建一个团队</li>
+<li class="myapp-li">向该团队添加一个用户，该用户自动成为该团队的管理员</li>
 </ol>
 <p class="myapp-p">这个场景可以用以下 schema 表示 - 请注意，用户可以属于多个团队，团队可以有多个用户（多对多关系）：</p>
-<pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Team {
-  id      Int    @id @default(autoincrement())
+<pre><div class="myapp-code-block"><div class="myapp-code-block-language">sql</div><pre class="myapp-code-block-content"><code class="language-sql">model Team {
+  id      <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
   name    String
-  members User[] // 多个团队成员
+  members <span class="token keyword">User</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">// 多个团队成员</span>
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  teams Team[] // 多个团队
+model <span class="token keyword">User</span> {
+  id    <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  email String <span class="token variable">@unique</span>
+  teams Team<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">// 多个团队</span>
 }
 </code></pre></div></pre>
 <p class="myapp-p">最直接的方法是创建一个团队，然后创建并将用户附加到该团队：</p>
@@ -558,10 +558,10 @@ model User {
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 </code></pre></div></pre>
 <p class="myapp-p">然而，这段代码存在一个问题 - 考虑以下场景：</p>
-<ol>
-<li>创建团队成功 - &quot;Aurora Adventures&quot; 现在已被占用</li>
-<li>创建和连接用户失败 - 团队 &quot;Aurora Adventures&quot; 存在，但没有用户</li>
-<li>再次通过注册流程并尝试重新创建 &quot;Aurora Adventures&quot; 失败 - 该团队已存在</li>
+<ol class="myapp-ol">
+<li class="myapp-li">创建团队成功 - &quot;Aurora Adventures&quot; 现在已被占用</li>
+<li class="myapp-li">创建和连接用户失败 - 团队 &quot;Aurora Adventures&quot; 存在，但没有用户</li>
+<li class="myapp-li">再次通过注册流程并尝试重新创建 &quot;Aurora Adventures&quot; 失败 - 该团队已存在</li>
 </ol>
 <p class="myapp-p">创建团队和添加用户应该是一个原子操作，<strong>要么全部成功，要么全部失败</strong>。</p>
 <p class="myapp-p">要在低级数据库客户端中实现原子写入，您必须将插入操作包装在 <code class="myapp-inlincode">BEGIN</code>、<code class="myapp-inlincode">COMMIT</code> 和 <code class="myapp-inlincode">ROLLBACK</code> 语句中。Prisma Client 通过<a class="myapp-a" href="/orm/prisma-client/queries/relation-queries#nested-writes" target="_blank" rel="noopener noreferrer">嵌套写入</a>解决了这个问题。以下查询在单个事务中创建团队、创建用户并连接记录：</p>
@@ -654,9 +654,9 @@ model User {
 </code></pre></div></pre>
 <h5>我可以执行多个嵌套写入吗 - 例如，创建两个新团队并分配用户？</h5>
 <p class="myapp-p">是的，但这是场景和技术的组合：</p>
-<ul>
-<li>创建团队并分配用户是依赖写入 - 使用嵌套写入</li>
-<li>同时创建所有团队和用户是独立写入，因为团队/用户组合 #1 和团队/用户组合 #2 是不相关的写入 - 使用 <code class="myapp-inlincode">$transaction([])</code> API</li>
+<ul class="myapp-ul">
+<li class="myapp-li">创建团队并分配用户是依赖写入 - 使用嵌套写入</li>
+<li class="myapp-li">同时创建所有团队和用户是独立写入，因为团队/用户组合 #1 和团队/用户组合 #2 是不相关的写入 - 使用 <code class="myapp-inlincode">$transaction([])</code> API</li>
 </ul>
 <pre><div class="myapp-code-block"><div class="myapp-code-block-language">ts</div><pre class="myapp-code-block-content"><code class="language-ts"><span class="token comment">// 嵌套写入</span>
 <span class="token keyword">const</span> createOne <span class="token operator">=</span> prisma<span class="token punctuation">.</span>team<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
@@ -687,9 +687,9 @@ model User {
 </code></pre></div></pre>
 <h2 class="myapp-h2">独立写入 (Independent writes)</h2>
 <p class="myapp-p">如果写入不依赖于先前操作的结果，则它们被认为是<strong>独立的</strong>。以下独立写入组可以按任何顺序发生：</p>
-<ul>
-<li>将订单列表的状态字段更新为“已发货”</li>
-<li>将电子邮件列表标记为“已读”</li>
+<ul class="myapp-ul">
+<li class="myapp-li">将订单列表的状态字段更新为“已发货”</li>
+<li class="myapp-li">将电子邮件列表标记为“已读”</li>
 </ul>
 <blockquote class="myapp-quote">
 <p class="myapp-p"><strong>注意</strong>: 如果存在约束，独立写入可能必须按特定顺序进行 - 例如，如果帖子具有强制性的 <code class="myapp-inlincode">authorId</code> 字段，则必须在博客作者之前删除博客文章。然而，它们仍然被认为是独立写入，因为没有操作依赖于先前操作的<em>结果</em>，例如数据库返回生成的 ID。</p>
@@ -697,17 +697,17 @@ model User {
 <p class="myapp-p">根据您的要求，Prisma Client 有四种选项来处理应一起成功或失败的独立写入。</p>
 <h3 class="myapp-h3">批量操作 (Bulk operations)</h3>
 <p class="myapp-p">批量写入允许您在单个事务中写入相同类型的多个记录 - 如果任何操作失败，Prisma Client 将回滚整个事务。Prisma Client 目前支持：</p>
-<ul>
-<li><code class="myapp-inlincode">createMany()</code></li>
-<li><code class="myapp-inlincode">createManyAndReturn()</code></li>
-<li><code class="myapp-inlincode">updateMany()</code></li>
-<li><code class="myapp-inlincode">updateManyAndReturn()</code></li>
-<li><code class="myapp-inlincode">deleteMany()</code></li>
+<ul class="myapp-ul">
+<li class="myapp-li"><code class="myapp-inlincode">createMany()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">createManyAndReturn()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">updateMany()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">updateManyAndReturn()</code></li>
+<li class="myapp-li"><code class="myapp-inlincode">deleteMany()</code></li>
 </ul>
 <h4>何时使用批量操作</h4>
 <p class="myapp-p">如果满足以下条件，请考虑将批量操作作为解决方案：</p>
-<ul>
-<li>✔ 您想更新一批<em>相同类型</em>的记录，例如一批电子邮件</li>
+<ul class="myapp-ul">
+<li class="myapp-li">✔ 您想更新一批<em>相同类型</em>的记录，例如一批电子邮件</li>
 </ul>
 <h4>场景：将电子邮件标记为已读</h4>
 <p class="myapp-p">您正在构建一个类似 gmail.com 的服务，您的客户想要一个**“标记为已读”**的功能，允许用户将所有电子邮件标记为已读。每次对电子邮件状态的更新都是一次独立写入，因为电子邮件之间不相互依赖 - 例如，您阿姨发来的“生日快乐！🍰”电子邮件与宜家发来的促销电子邮件无关。</p>
@@ -765,30 +765,30 @@ model Email <span class="token punctuation">{</span>
 <p class="myapp-p">随着 Prisma Client 的发展，<code class="myapp-inlincode">$transaction([])</code> API 的用例将越来越多地被更专门的批量操作（如 <code class="myapp-inlincode">createMany</code>）和嵌套写入所取代。</p>
 <h4>何时使用 <code class="myapp-inlincode">$transaction([])</code> API</h4>
 <p class="myapp-p">如果满足以下条件，请考虑使用 <code class="myapp-inlincode">$transaction([])</code> API：</p>
-<ul>
-<li>✔ 您想更新一个包含不同类型记录的批次，例如电子邮件和用户。这些记录不需要以任何方式相关联。</li>
-<li>✔ 您想批量处理原始 SQL 查询 (<code class="myapp-inlincode">$executeRaw</code>) - 例如，对于 Prisma Client 尚不支持的功能。</li>
+<ul class="myapp-ul">
+<li class="myapp-li">✔ 您想更新一个包含不同类型记录的批次，例如电子邮件和用户。这些记录不需要以任何方式相关联。</li>
+<li class="myapp-li">✔ 您想批量处理原始 SQL 查询 (<code class="myapp-inlincode">$executeRaw</code>) - 例如，对于 Prisma Client 尚不支持的功能。</li>
 </ul>
 <h4>场景：隐私法规</h4>
 <p class="myapp-p">GDPR 和其他隐私法规赋予用户要求组织删除其所有个人数据的权利。在以下示例 schema 中，一个 <code class="myapp-inlincode">User</code> 可以有许多帖子和私信：</p>
-<pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model User {
-  id              Int              @id @default(autoincrement())
-  posts           Post[]
-  privateMessages PrivateMessage[]
+<pre><div class="myapp-code-block"><div class="myapp-code-block-language">sql</div><pre class="myapp-code-block-content"><code class="language-sql">model <span class="token keyword">User</span> {
+  id              <span class="token keyword">Int</span>              <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  posts           Post<span class="token punctuation">[</span><span class="token punctuation">]</span>
+  privateMessages PrivateMessage<span class="token punctuation">[</span><span class="token punctuation">]</span>
 }
 
 model Post {
-  id      Int    @id @default(autoincrement())
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade) // 添加 onDelete: Cascade 可以简化删除
-  userId  Int
+  id      <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token keyword">user</span>    <span class="token keyword">User</span>   <span class="token variable">@relation</span><span class="token punctuation">(</span><span class="token keyword">fields</span>: <span class="token punctuation">[</span>userId<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">references</span>: <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">,</span> onDelete: <span class="token keyword">Cascade</span><span class="token punctuation">)</span> <span class="token comment">// 添加 onDelete: Cascade 可以简化删除</span>
+  userId  <span class="token keyword">Int</span>
   title   String
   content String
 }
 
 model PrivateMessage {
-  id      Int    @id @default(autoincrement())
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade) // 添加 onDelete: Cascade
-  userId  Int
+  id      <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token keyword">user</span>    <span class="token keyword">User</span>   <span class="token variable">@relation</span><span class="token punctuation">(</span><span class="token keyword">fields</span>: <span class="token punctuation">[</span>userId<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">references</span>: <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">,</span> onDelete: <span class="token keyword">Cascade</span><span class="token punctuation">)</span> <span class="token comment">// 添加 onDelete: Cascade</span>
+  userId  <span class="token keyword">Int</span>
   message String
 }
 </code></pre></div></pre>
@@ -834,22 +834,22 @@ model PrivateMessage {
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 </code></pre></div></pre>
 <p class="myapp-p">将 <code class="myapp-inlincode">Team</code> 和 <code class="myapp-inlincode">User</code> 的 <code class="myapp-inlincode">id</code> 字段更改为 <code class="myapp-inlincode">String</code>（如果您不提供值，则会自动生成 UUID），而不是自动生成 ID。此示例使用 UUID：</p>
-<pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Team {
-  //delete-next-line
-  id      Int    @id @default(autoincrement())
-  //add-next-line
-  id      String @id @default(uuid())
+<pre><div class="myapp-code-block"><div class="myapp-code-block-language">sql</div><pre class="myapp-code-block-content"><code class="language-sql">model Team {
+  <span class="token comment">//delete-next-line</span>
+  id      <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token comment">//add-next-line</span>
+  id      String <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>uuid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
   name    String
-  members User[]
+  members <span class="token keyword">User</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
 }
 
-model User {
-  //delete-next-line
-  id    Int    @id @default(autoincrement())
-  //add-next-line
-  id    String @id @default(uuid())
-  email String @unique
-  teams Team[]
+model <span class="token keyword">User</span> {
+  <span class="token comment">//delete-next-line</span>
+  id    <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token comment">//add-next-line</span>
+  id    String <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>uuid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  email String <span class="token variable">@unique</span>
+  teams Team<span class="token punctuation">[</span><span class="token punctuation">]</span>
 }
 </code></pre></div></pre>
 <p class="myapp-p">将注册流程示例重构为使用 <code class="myapp-inlincode">$transaction([])</code> API 而不是嵌套写入：</p>
@@ -932,48 +932,48 @@ model User {
 <p class="myapp-p">如果您已经在使用自动生成的 ID 和嵌套写入，没有令人信服的理由切换到手动生成的 ID 和 <code class="myapp-inlincode">$transaction([])</code> API。</p>
 <h2 class="myapp-h2">读取、修改、写入 (Read, modify, write)</h2>
 <p class="myapp-p">在某些情况下，您可能需要将自定义逻辑作为原子操作的一部分来执行 - 也称为<a class="myapp-a" href="https://en.wikipedia.org/wiki/Read%E2%80%93modify%E2%80%93write" target="_blank" rel="noopener noreferrer">读取-修改-写入模式</a>。以下是读取-修改-写入模式的一个示例：</p>
-<ul>
-<li>从数据库读取一个值</li>
-<li>运行一些逻辑来操作该值（例如，联系外部 API）</li>
-<li>将该值写回数据库</li>
+<ul class="myapp-ul">
+<li class="myapp-li">从数据库读取一个值</li>
+<li class="myapp-li">运行一些逻辑来操作该值（例如，联系外部 API）</li>
+<li class="myapp-li">将该值写回数据库</li>
 </ul>
 <p class="myapp-p">所有操作都应<strong>作为一个整体成功或失败</strong>，而不会对数据库进行不必要的更改，但您不一定需要使用实际的数据库事务。本指南的这一部分描述了使用 Prisma Client 和读取-修改-写入模式的两种方法：</p>
-<ul>
-<li>设计幂等 API</li>
-<li>乐观并发控制</li>
+<ul class="myapp-ul">
+<li class="myapp-li">设计幂等 API</li>
+<li class="myapp-li">乐观并发控制</li>
 </ul>
 <h3 class="myapp-h3">幂等 API (Idempotent APIs)</h3>
 <p class="myapp-p">幂等性是指能够使用相同的参数多次运行相同的逻辑并获得相同结果的能力：无论您运行逻辑一次还是一千次，<strong>对数据库的影响</strong>都是相同的。例如：</p>
-<ul>
-<li><strong>非幂等</strong>：在数据库中使用电子邮件地址 <code class="myapp-inlincode">&quot;letoya@prisma.io&quot;</code> 更新或插入（upsert）用户。<code class="myapp-inlincode">User</code> 表<strong>不</strong>强制执行唯一的电子邮件地址。如果您运行逻辑一次（创建一个用户）或十次（创建十个用户），对数据库的影响是不同的。</li>
-<li><strong>幂等</strong>：在数据库中使用电子邮件地址 <code class="myapp-inlincode">&quot;letoya@prisma.io&quot;</code> 更新或插入（upsert）用户。<code class="myapp-inlincode">User</code> 表<strong>确实</strong>强制执行唯一的电子邮件地址。如果您运行逻辑一次（创建一个用户）或十次（使用相同的输入更新现有用户），对数据库的影响是相同的。</li>
+<ul class="myapp-ul">
+<li class="myapp-li"><strong>非幂等</strong>：在数据库中使用电子邮件地址 <code class="myapp-inlincode">&quot;letoya@prisma.io&quot;</code> 更新或插入（upsert）用户。<code class="myapp-inlincode">User</code> 表<strong>不</strong>强制执行唯一的电子邮件地址。如果您运行逻辑一次（创建一个用户）或十次（创建十个用户），对数据库的影响是不同的。</li>
+<li class="myapp-li"><strong>幂等</strong>：在数据库中使用电子邮件地址 <code class="myapp-inlincode">&quot;letoya@prisma.io&quot;</code> 更新或插入（upsert）用户。<code class="myapp-inlincode">User</code> 表<strong>确实</strong>强制执行唯一的电子邮件地址。如果您运行逻辑一次（创建一个用户）或十次（使用相同的输入更新现有用户），对数据库的影响是相同的。</li>
 </ul>
 <p class="myapp-p">幂等性是您应该并且可以在应用程序中尽可能主动设计的东西。</p>
 <h4>何时设计幂等 API</h4>
-<ul>
-<li>✔ 您需要能够重试相同的逻辑而不会在数据库中产生不必要的副作用</li>
+<ul class="myapp-ul">
+<li class="myapp-li">✔ 您需要能够重试相同的逻辑而不会在数据库中产生不必要的副作用</li>
 </ul>
 <h4>场景：升级 Slack 团队</h4>
 <p class="myapp-p">您正在为 Slack 创建一个升级流程，允许团队解锁付费功能。团队可以在不同的计划之间进行选择，并按用户、按月付费。您使用 Stripe 作为支付网关，并扩展您的 <code class="myapp-inlincode">Team</code> 模型以存储 <code class="myapp-inlincode">stripeCustomerId</code>。订阅在 Stripe 中管理。</p>
-<pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Team {
-  id               Int     @id @default(autoincrement())
+<pre><div class="myapp-code-block"><div class="myapp-code-block-language">sql</div><pre class="myapp-code-block-content"><code class="language-sql">model Team {
+  id               <span class="token keyword">Int</span>     <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
   name             String
-  members          User[] // 'User' 应为 'members'
-  //highlight-next-line
-  stripeCustomerId String? @unique // 可能需要唯一约束
+  members          <span class="token keyword">User</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">// 'User' 应为 'members'</span>
+  <span class="token comment">//highlight-next-line</span>
+  stripeCustomerId String? <span class="token variable">@unique</span> <span class="token comment">// 可能需要唯一约束</span>
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  teams Team[]
+model <span class="token keyword">User</span> {
+  id    <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  email String <span class="token variable">@unique</span>
+  teams Team<span class="token punctuation">[</span><span class="token punctuation">]</span>
 }
 </code></pre></div></pre>
 <p class="myapp-p">升级流程如下所示：</p>
-<ol>
-<li>计算用户数量</li>
-<li>在 Stripe 中创建一个包含用户数量的订阅</li>
-<li>将团队与 Stripe 客户 ID 关联以解锁付费功能</li>
+<ol class="myapp-ol">
+<li class="myapp-li">计算用户数量</li>
+<li class="myapp-li">在 Stripe 中创建一个包含用户数量的订阅</li>
+<li class="myapp-li">将团队与 Stripe 客户 ID 关联以解锁付费功能</li>
 </ol>
 <pre><div class="myapp-code-block"><div class="myapp-code-block-language">ts</div><pre class="myapp-code-block-content"><code class="language-ts"><span class="token comment">// 假设 stripe 对象已正确配置</span>
 <span class="token comment">// import Stripe from 'stripe';</span>
@@ -1027,21 +1027,21 @@ model User {
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 </code></pre></div></pre>
 <p class="myapp-p">这个例子有一个问题：你只能运行这个逻辑<em>一次</em>。考虑以下场景：</p>
-<ol>
-<li>
+<ol class="myapp-ol">
+<li class="myapp-li">
 <p class="myapp-p">Stripe 创建了一个新客户和订阅，并返回了一个客户 ID</p>
 </li>
-<li>
+<li class="myapp-li">
 <p class="myapp-p">更新团队<strong>失败</strong> - 团队在 Slack 数据库中未标记为客户</p>
 </li>
-<li>
+<li class="myapp-li">
 <p class="myapp-p">客户被 Stripe 收费，但 Slack 中的付费功能未解锁，因为团队缺少有效的 <code class="myapp-inlincode">stripeCustomerId</code></p>
 </li>
-<li>
+<li class="myapp-li">
 <p class="myapp-p">再次运行相同的代码要么：</p>
-<ul>
-<li>导致错误，因为（由 <code class="myapp-inlincode">metadata.teamId</code> 定义的）团队已经存在客户 - Stripe 不会返回新的客户 ID（如果您的逻辑尝试重新创建）</li>
-<li>如果您的逻辑不够健壮，可能会在 Stripe 中创建另一个订阅（<strong>非幂等</strong>）</li>
+<ul class="myapp-ul">
+<li class="myapp-li">导致错误，因为（由 <code class="myapp-inlincode">metadata.teamId</code> 定义的）团队已经存在客户 - Stripe 不会返回新的客户 ID（如果您的逻辑尝试重新创建）</li>
+<li class="myapp-li">如果您的逻辑不够健壮，可能会在 Stripe 中创建另一个订阅（<strong>非幂等</strong>）</li>
 </ul>
 </li>
 </ol>
@@ -1135,46 +1135,46 @@ model User {
 <h3 class="myapp-h3">乐观并发控制 (Optimistic concurrency control)</h3>
 <p class="myapp-p">乐观并发控制（OCC）是一种处理单个实体并发操作的模型，它不依赖于🔒锁定。相反，我们<strong>乐观地</strong>假设记录在读取和写入之间保持不变，并使用并发令牌（时间戳或版本字段）来检测对记录的更改。</p>
 <p class="myapp-p">如果发生❌冲突（自您读取记录以来，其他人已更改该记录），则取消事务。根据您的场景，您可以：</p>
-<ul>
-<li>重试事务（预订另一个电影院座位）</li>
-<li>抛出错误（提醒用户他们即将覆盖其他人所做的更改）</li>
+<ul class="myapp-ul">
+<li class="myapp-li">重试事务（预订另一个电影院座位）</li>
+<li class="myapp-li">抛出错误（提醒用户他们即将覆盖其他人所做的更改）</li>
 </ul>
 <p class="myapp-p">本节介绍如何构建自己的乐观并发控制。另请参阅：<a class="myapp-a" href="https://github.com/prisma/prisma/issues/4988" target="_blank" rel="noopener noreferrer">GitHub 上关于应用程序级乐观并发控制的计划</a></p>
-<div class="myapp-admonition info"><ul>
-<li>如果您使用版本 4.4.0 或更早版本，则无法在 <code class="myapp-inlincode">update</code> 操作上使用乐观并发控制，因为您无法按非唯一字段进行筛选。您需要与乐观并发控制一起使用的 <code class="myapp-inlincode">version</code> 字段是非唯一字段。</li>
-<li>自版本 5.0.0 起，您可以在 <code class="myapp-inlincode">update</code> 操作中<a class="myapp-a" href="/orm/reference/prisma-client-reference#filter-on-non-unique-fields-with-userwhereuniqueinput" target="_blank" rel="noopener noreferrer">按非唯一字段进行筛选</a>，从而使用乐观并发控制。该功能也可通过预览标志 <code class="myapp-inlincode">extendedWhereUnique</code> 在版本 4.5.0 到 4.16.2 中使用。</li>
+<div class="myapp-admonition info"><ul class="myapp-ul">
+<li class="myapp-li">如果您使用版本 4.4.0 或更早版本，则无法在 <code class="myapp-inlincode">update</code> 操作上使用乐观并发控制，因为您无法按非唯一字段进行筛选。您需要与乐观并发控制一起使用的 <code class="myapp-inlincode">version</code> 字段是非唯一字段。</li>
+<li class="myapp-li">自版本 5.0.0 起，您可以在 <code class="myapp-inlincode">update</code> 操作中<a class="myapp-a" href="/orm/reference/prisma-client-reference#filter-on-non-unique-fields-with-userwhereuniqueinput" target="_blank" rel="noopener noreferrer">按非唯一字段进行筛选</a>，从而使用乐观并发控制。该功能也可通过预览标志 <code class="myapp-inlincode">extendedWhereUnique</code> 在版本 4.5.0 到 4.16.2 中使用。</li>
 </ul></div>
 <h4>何时使用乐观并发控制</h4>
-<ul>
-<li>✔ 您预计会有大量并发请求（多人预订电影院座位）</li>
-<li>✔ 您预计这些并发请求之间的冲突将很少发生</li>
+<ul class="myapp-ul">
+<li class="myapp-li">✔ 您预计会有大量并发请求（多人预订电影院座位）</li>
+<li class="myapp-li">✔ 您预计这些并发请求之间的冲突将很少发生</li>
 </ul>
 <p class="myapp-p">在具有大量并发请求的应用程序中避免锁定，可以使应用程序对负载更具弹性，并且总体上更具可伸缩性。虽然锁定本身并不坏，但在高并发环境中锁定可能导致意想不到的后果 - 即使您只锁定单个行，并且只锁定很短的时间。有关更多信息，请参阅：</p>
-<ul>
-<li><a class="myapp-a" href="https://kendralittle.com/2016/02/04/why-rowlock-hints-can-make-queries-slower-and-blocking-worse-in-sql-server/" target="_blank" rel="noopener noreferrer">为什么 ROWLOCK 提示会使 SQL Server 中的查询变慢并加剧阻塞</a></li>
+<ul class="myapp-ul">
+<li class="myapp-li"><a class="myapp-a" href="https://kendralittle.com/2016/02/04/why-rowlock-hints-can-make-queries-slower-and-blocking-worse-in-sql-server/" target="_blank" rel="noopener noreferrer">为什么 ROWLOCK 提示会使 SQL Server 中的查询变慢并加剧阻塞</a></li>
 </ul>
 <h4>场景：在电影院预订座位</h4>
 <p class="myapp-p">您正在为电影院创建一个预订系统。每部电影都有固定数量的座位。以下 schema 对电影和座位进行建模：</p>
-<pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Seat {
-  id        Int   @id @default(autoincrement())
-  userId    Int?  // 关联到 User 的外键
-  claimedBy User? @relation(fields: [userId], references: [id]) // 关联字段
-  movieId   Int   // 关联到 Movie 的外键
-  movie     Movie @relation(fields: [movieId], references: [id]) // 关联字段
+<pre><div class="myapp-code-block"><div class="myapp-code-block-language">sql</div><pre class="myapp-code-block-content"><code class="language-sql">model Seat {
+  id        <span class="token keyword">Int</span>   <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  userId    <span class="token keyword">Int</span>?  <span class="token comment">// 关联到 User 的外键</span>
+  claimedBy <span class="token keyword">User</span>? <span class="token variable">@relation</span><span class="token punctuation">(</span><span class="token keyword">fields</span>: <span class="token punctuation">[</span>userId<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">references</span>: <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// 关联字段</span>
+  movieId   <span class="token keyword">Int</span>   <span class="token comment">// 关联到 Movie 的外键</span>
+  movie     Movie <span class="token variable">@relation</span><span class="token punctuation">(</span><span class="token keyword">fields</span>: <span class="token punctuation">[</span>movieId<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">references</span>: <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// 关联字段</span>
 }
 
 model Movie {
-  id    Int    @id     @default(autoincrement())
-  name  String @unique
-  seats Seat[] // 一对多关系
+  id    <span class="token keyword">Int</span>    <span class="token variable">@id</span>     <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  name  String <span class="token variable">@unique</span>
+  seats Seat<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">// 一对多关系</span>
 }
 
-// 需要 User 模型
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  // 可能有其他字段
-  seats Seat[] // 用户预订的座位
+<span class="token comment">// 需要 User 模型</span>
+model <span class="token keyword">User</span> {
+  id    <span class="token keyword">Int</span>    <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  email String <span class="token variable">@unique</span>
+  <span class="token comment">// 可能有其他字段</span>
+  seats Seat<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">// 用户预订的座位</span>
 }
 </code></pre></div></pre>
 <p class="myapp-p">以下示例代码查找第一个可用座位并将该座位分配给用户：</p>
@@ -1207,21 +1207,21 @@ model User {
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre></div></pre>
 <p class="myapp-p">然而，这段代码存在“重复预订问题” - 两个人可能预订到同一个座位：</p>
-<ol>
-<li>座位 3A 返回给 Sorcha（<code class="myapp-inlincode">findFirst</code>）</li>
-<li>座位 3A 返回给 Ellen（<code class="myapp-inlincode">findFirst</code>）</li>
-<li>座位 3A 被 Sorcha 预订（<code class="myapp-inlincode">update</code>）</li>
-<li>座位 3A 被 Ellen 预订（<code class="myapp-inlincode">update</code> - 覆盖了 Sorcha 的预订）</li>
+<ol class="myapp-ol">
+<li class="myapp-li">座位 3A 返回给 Sorcha（<code class="myapp-inlincode">findFirst</code>）</li>
+<li class="myapp-li">座位 3A 返回给 Ellen（<code class="myapp-inlincode">findFirst</code>）</li>
+<li class="myapp-li">座位 3A 被 Sorcha 预订（<code class="myapp-inlincode">update</code>）</li>
+<li class="myapp-li">座位 3A 被 Ellen 预订（<code class="myapp-inlincode">update</code> - 覆盖了 Sorcha 的预订）</li>
 </ol>
 <p class="myapp-p">即使 Sorcha 已成功预订座位，系统最终仍存储 Ellen 的预订。要使用乐观并发控制解决此问题，请向座位添加一个 <code class="myapp-inlincode">version</code> 字段：</p>
-<pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Seat {
-  id        Int   @id @default(autoincrement())
-  userId    Int?
-  claimedBy User? @relation(fields: [userId], references: [id])
-  movieId   Int
-  movie     Movie @relation(fields: [movieId], references: [id])
-  //highlight-next-line
-  version   Int   @default(0) // 添加版本字段，默认为 0
+<pre><div class="myapp-code-block"><div class="myapp-code-block-language">sql</div><pre class="myapp-code-block-content"><code class="language-sql">model Seat {
+  id        <span class="token keyword">Int</span>   <span class="token variable">@id</span> <span class="token variable">@default</span><span class="token punctuation">(</span>autoincrement<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  userId    <span class="token keyword">Int</span>?
+  claimedBy <span class="token keyword">User</span>? <span class="token variable">@relation</span><span class="token punctuation">(</span><span class="token keyword">fields</span>: <span class="token punctuation">[</span>userId<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">references</span>: <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">)</span>
+  movieId   <span class="token keyword">Int</span>
+  movie     Movie <span class="token variable">@relation</span><span class="token punctuation">(</span><span class="token keyword">fields</span>: <span class="token punctuation">[</span>movieId<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">references</span>: <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">)</span>
+  <span class="token comment">//highlight-next-line</span>
+  version   <span class="token keyword">Int</span>   <span class="token variable">@default</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">// 添加版本字段，默认为 0</span>
 }
 </code></pre></div></pre>
 <p class="myapp-p">接下来，调整代码以在更新前检查 <code class="myapp-inlincode">version</code> 字段：</p>
@@ -1274,11 +1274,11 @@ model User {
 <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">用户 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>userId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> 成功预订座位 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>availableSeat<span class="token punctuation">.</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre></div></pre>
 <p class="myapp-p">现在两个人不可能预订同一个座位了：</p>
-<ol>
-<li>座位 3A 返回给 Sorcha（<code class="myapp-inlincode">version</code> 为 0）</li>
-<li>座位 3A 返回给 Ellen（<code class="myapp-inlincode">version</code> 为 0）</li>
-<li>座位 3A 被 Sorcha 预订（<code class="myapp-inlincode">version</code> 递增到 1，预订成功）</li>
-<li>座位 3A 尝试被 Ellen 预订（内存中的 <code class="myapp-inlincode">version</code> (0) 与数据库中的 <code class="myapp-inlincode">version</code> (1) 不匹配 - 预订不成功）</li>
+<ol class="myapp-ol">
+<li class="myapp-li">座位 3A 返回给 Sorcha（<code class="myapp-inlincode">version</code> 为 0）</li>
+<li class="myapp-li">座位 3A 返回给 Ellen（<code class="myapp-inlincode">version</code> 为 0）</li>
+<li class="myapp-li">座位 3A 被 Sorcha 预订（<code class="myapp-inlincode">version</code> 递增到 1，预订成功）</li>
+<li class="myapp-li">座位 3A 尝试被 Ellen 预订（内存中的 <code class="myapp-inlincode">version</code> (0) 与数据库中的 <code class="myapp-inlincode">version</code> (1) 不匹配 - 预订不成功）</li>
 </ol>
 <h3 class="myapp-h3">交互式事务 (Interactive transactions)</h3>
 <p class="myapp-p">如果您有一个现有的应用程序，将其重构为使用乐观并发控制可能是一项重大的任务。对于这种情况，交互式事务提供了一个有用的应急方案。</p>

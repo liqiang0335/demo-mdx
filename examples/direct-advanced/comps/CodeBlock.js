@@ -11,6 +11,8 @@ import 'prismjs/components/prism-bash.js';
 import 'prismjs/components/prism-json.js';
 import 'prismjs/components/prism-python.js';
 import 'prismjs/components/prism-tsx.js';
+import 'prismjs/components/prism-sql.js';
+
 
 
 // 自定义代码块组件，增加Prism高亮支持
@@ -19,7 +21,7 @@ const CodeBlock = (props) => {
   // 处理语言类名 (如 language-js)
   const language = props.className
     ? props.className.replace('language-', '')
-      .replace('prisma', 'markup') // 将 prisma语言替换为 js
+      .replace('prisma', 'sql') // 将 prisma语言替换为 js
     : 'text';
 
   // 获取代码内容

@@ -30,6 +30,9 @@ const createAdvancedComponents = () => {
     h2: (props) => React.createElement('h2', { className: 'myapp-h2', ...props }, props.children),
     h3: (props) => React.createElement('h3', { className: 'myapp-h3', ...props }, props.children),
     p: (props) => React.createElement('p', { className: 'myapp-p', ...props }, props.children),
+    ol: (props) => React.createElement('ol', { className: 'myapp-ol', ...props }, props.children),
+    ul: (props) => React.createElement('ul', { className: 'myapp-ul', ...props }, props.children),
+    li: (props) => React.createElement('li', { className: 'myapp-li', ...props }, props.children),
     a: (props) => React.createElement('a', { className: 'myapp-a', href: props.href, target: "_blank", rel: "noopener noreferrer", ...props }, props.children),
     blockquote: (props) => React.createElement('blockquote', { className: 'myapp-quote' }, props.children),
     code: (props) => {
@@ -55,7 +58,6 @@ const createAdvancedComponents = () => {
  * 它使用React服务端渲染和MDX编译器来处理Markdown和JSX混合内容。
  * 支持remark-gfm插件，可以处理GitHub风格的Markdown扩展语法。 
  */
-
 async function main(source, output) {
   try {
     // 读取 MDX 文件内容
@@ -71,7 +73,7 @@ async function main(source, output) {
     const { default: Content } = await run(compiledCode, { ...runtime, baseUrl: import.meta.url });
     // 创建组件并直接传递给 Content
     const container = React.createElement('div', {
-      className: 'container'
+      className: 'myapp-container'
     }, React.createElement(Content, { components: createAdvancedComponents() }));
 
     const result = renderToString(container);
