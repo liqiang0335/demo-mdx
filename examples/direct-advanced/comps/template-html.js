@@ -6,6 +6,7 @@ export default function TemplateHtml(result) {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>MDX 高级直接组件示例</title>
+          <link rel="stylesheet" href="./style.css">
           <style>
             code[class*="language-"],
             pre[class*="language-"] {
