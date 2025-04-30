@@ -6,6 +6,17 @@ import { renderToString } from 'react-dom/server';
 import { compile, run } from '@mdx-js/mdx';
 import * as runtime from 'react/jsx-runtime';
 import remarkGfm from 'remark-gfm';
+import Prism from 'prismjs';
+
+// 导入常用的语言支持
+import 'prismjs/components/prism-javascript.js';
+import 'prismjs/components/prism-jsx.js';
+import 'prismjs/components/prism-typescript.js';
+import 'prismjs/components/prism-css.js';
+import 'prismjs/components/prism-markup.js';
+import 'prismjs/components/prism-bash.js';
+import 'prismjs/components/prism-json.js';
+import 'prismjs/components/prism-python.js';
 
 /**
  * 项目说明:
@@ -30,14 +41,27 @@ const createAdvancedComponents = () => {
     }
   }, props.children);
 
-  // 自定义代码块组件
+  // 自定义代码块组件，增加Prism高亮支持
   const CodeBlock = (props) => {
     // 处理语言类名 (如 language-js)
     const language = props.className ? props.className.replace('language-', '') : 'text';
 
+    // 获取代码内容
+    const code = typeof props.children === 'string' ? props.children : '';
+
+    // 使用Prism高亮代码
+    let highlightedCode = code;
+    if (language !== 'text' && Prism.languages[language]) {
+      try {
+        highlightedCode = Prism.highlight(code, Prism.languages[language], language);
+      } catch (error) {
+        console.warn(`代码高亮失败: ${language}`);
+      }
+    }
+
     return React.createElement('div', {
       style: {
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#282c34', // 深色背景
         padding: '16px',
         borderRadius: '4px',
         overflow: 'auto',
@@ -48,11 +72,28 @@ const createAdvancedComponents = () => {
         key: 'language',
         style: {
           fontSize: '12px',
-          color: '#666',
-          marginBottom: '8px'
+          color: '#9ca3af',
+          marginBottom: '8px',
+          fontFamily: 'monospace'
         }
       }, language),
-      React.createElement('pre', { key: 'content' }, props.children)
+      React.createElement('pre', {
+        key: 'content',
+        style: {
+          margin: 0,
+          fontFamily: 'monospace',
+          fontSize: '14px',
+          lineHeight: '1.5'
+        }
+      },
+        React.createElement('code', {
+          className: `language-${language}`,
+          dangerouslySetInnerHTML: { __html: highlightedCode },
+          style: {
+            display: 'block',
+            color: '#e5e7eb'
+          }
+        }))
     ]);
   };
 
@@ -194,6 +235,99 @@ async function main() {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>MDX 高级直接组件示例</title>
+          <style>
+            code[class*="language-"],
+            pre[class*="language-"] {
+              color: #ccc;
+              background: none;
+              font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+              font-size: 1em;
+              text-align: left;
+              white-space: pre;
+              word-spacing: normal;
+              word-break: normal;
+              word-wrap: normal;
+              line-height: 1.5;
+              tab-size: 4;
+              hyphens: none;
+            }
+            
+            /* Prism 高亮样式 */
+            .token.comment,
+            .token.block-comment,
+            .token.prolog,
+            .token.doctype,
+            .token.cdata {
+              color: #999;
+            }
+
+            .token.punctuation {
+              color: #ccc;
+            }
+
+            .token.tag,
+            .token.attr-name,
+            .token.namespace,
+            .token.deleted {
+              color: #e2777a;
+            }
+
+            .token.function-name {
+              color: #6196cc;
+            }
+
+            .token.boolean,
+            .token.number,
+            .token.function {
+              color: #f08d49;
+            }
+
+            .token.property,
+            .token.class-name,
+            .token.constant,
+            .token.symbol {
+              color: #f8c555;
+            }
+
+            .token.selector,
+            .token.important,
+            .token.atrule,
+            .token.keyword,
+            .token.builtin {
+              color: #cc99cd;
+            }
+
+            .token.string,
+            .token.char,
+            .token.attr-value,
+            .token.regex,
+            .token.variable {
+              color: #7ec699;
+            }
+
+            .token.operator,
+            .token.entity,
+            .token.url {
+              color: #67cdcc;
+            }
+
+            .token.important,
+            .token.bold {
+              font-weight: bold;
+            }
+
+            .token.italic {
+              font-style: italic;
+            }
+
+            .token.entity {
+              cursor: help;
+            }
+
+            .token.inserted {
+              color: green;
+            }
+          </style>
         </head>
         <body>
           ${result}

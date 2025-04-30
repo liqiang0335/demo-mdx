@@ -5,6 +5,99 @@
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>MDX 高级直接组件示例</title>
+          <style>
+            code[class*="language-"],
+            pre[class*="language-"] {
+              color: #ccc;
+              background: none;
+              font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+              font-size: 1em;
+              text-align: left;
+              white-space: pre;
+              word-spacing: normal;
+              word-break: normal;
+              word-wrap: normal;
+              line-height: 1.5;
+              tab-size: 4;
+              hyphens: none;
+            }
+            
+            /* Prism 高亮样式 */
+            .token.comment,
+            .token.block-comment,
+            .token.prolog,
+            .token.doctype,
+            .token.cdata {
+              color: #999;
+            }
+
+            .token.punctuation {
+              color: #ccc;
+            }
+
+            .token.tag,
+            .token.attr-name,
+            .token.namespace,
+            .token.deleted {
+              color: #e2777a;
+            }
+
+            .token.function-name {
+              color: #6196cc;
+            }
+
+            .token.boolean,
+            .token.number,
+            .token.function {
+              color: #f08d49;
+            }
+
+            .token.property,
+            .token.class-name,
+            .token.constant,
+            .token.symbol {
+              color: #f8c555;
+            }
+
+            .token.selector,
+            .token.important,
+            .token.atrule,
+            .token.keyword,
+            .token.builtin {
+              color: #cc99cd;
+            }
+
+            .token.string,
+            .token.char,
+            .token.attr-value,
+            .token.regex,
+            .token.variable {
+              color: #7ec699;
+            }
+
+            .token.operator,
+            .token.entity,
+            .token.url {
+              color: #67cdcc;
+            }
+
+            .token.important,
+            .token.bold {
+              font-weight: bold;
+            }
+
+            .token.italic {
+              font-style: italic;
+            }
+
+            .token.entity {
+              cursor: help;
+            }
+
+            .token.inserted {
+              color: green;
+            }
+          </style>
         </head>
         <body>
           <div style="font-family:system-ui, sans-serif;max-width:800px;margin:0 auto;padding:20px"><h1 style="color:darkblue;border-bottom:1px solid #eee">高级 MDX 组件示例</h1>
@@ -26,15 +119,15 @@
 <p style="line-height:1.6">它有左侧边框和斜体样式。</p>
 </blockquote>
 <h2 style="color:darkgreen">代码块示例</h2>
-<pre><div style="background-color:#f5f5f5;padding:16px;border-radius:4px;overflow:auto;margin:16px 0"><div style="font-size:12px;color:#666;margin-bottom:8px">js</div><pre>// 这是一个代码块示例
-const greeting = &#x27;Hello, MDX!&#x27;;
-console.log(greeting);
+<pre><div style="background-color:#282c34;padding:16px;border-radius:4px;overflow:auto;margin:16px 0"><div style="font-size:12px;color:#9ca3af;margin-bottom:8px;font-family:monospace">js</div><pre style="margin:0;font-family:monospace;font-size:14px;line-height:1.5"><code class="language-js" style="display:block;color:#e5e7eb"><span class="token comment">// 这是一个代码块示例</span>
+<span class="token keyword">const</span> greeting <span class="token operator">=</span> <span class="token string">'Hello, MDX!'</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>greeting<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// 注意它显示了语言标签并有背景色
-function example() {
-  return &#x27;代码块被自定义组件美化了&#x27;;
-}
-</pre></div></pre>
+<span class="token comment">// 注意它显示了语言标签并有背景色</span>
+<span class="token keyword">function</span> <span class="token function">example</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token string">'代码块被自定义组件美化了'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div></pre>
 <h2 style="color:darkgreen">链接示例</h2>
 <p style="line-height:1.6"><a href="https://mdxjs.com/" style="color:#0077cc;text-decoration:none;border-bottom:1px dashed #0077cc" target="_blank" rel="noopener noreferrer">这是一个自定义样式的链接</a> 它有特殊的颜色和底部虚线。</p>
 <h2 style="color:darkgreen">内置组件</h2>
@@ -44,7 +137,18 @@ function example() {
 <div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#e8f4fd;border-color:#b3d7ff"><p style="line-height:1.6">这是一个信息提示框（默认类型）。</p></div>
 <div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#e9fbe8;border-color:#c3e6cb"><p style="line-height:1.6">这是一个成功提示框。</p></div>
 <div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#fff9e6;border-color:#ffeeba"><p style="line-height:1.6">这是一个警告提示框。</p></div>
-<div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#feeae9;border-color:#f5c6cb"><p style="line-height:1.6">这是一个错误提示框。</p></div></div>
+<div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#feeae9;border-color:#f5c6cb"><p style="line-height:1.6">这是一个错误提示框。</p></div>
+<h2 style="color:darkgreen">代码高亮示例</h2>
+<pre><div style="background-color:#282c34;padding:16px;border-radius:4px;overflow:auto;margin:16px 0"><div style="font-size:12px;color:#9ca3af;margin-bottom:8px;font-family:monospace">jsx</div><pre style="margin:0;font-family:monospace;font-size:14px;line-height:1.5"><code class="language-jsx" style="display:block;color:#e5e7eb"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Thing</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">className</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">'</span>red<span class="token punctuation">'</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span><span class="token plain-text">Hello, World!</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">This is a paragraph.</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span><span class="token punctuation">></span></span><span class="token plain-text">Click me</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><span class="token plain-text">
+  </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token punctuation">}</span>
+
+# Hello<span class="token punctuation">,</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Thing</span></span> <span class="token punctuation">/></span></span>
+</code></pre></div></pre></div>
         </body>
       </html>
     
