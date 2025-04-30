@@ -6,7 +6,7 @@
   "scripts": {
     "node-loader": "node --import ./examples/node-loader/register.js ./examples/node-loader/index.js",
     "direct": "node examples/direct-components/index.js",
-    "direct:advanced": "node examples/direct-advanced/index.js"
+    "start": "node examples/direct-advanced/index.js"
   },
   "keywords": [],
   "author": "",

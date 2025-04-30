@@ -10,14 +10,18 @@ import 'prismjs/components/prism-markup.js';
 import 'prismjs/components/prism-bash.js';
 import 'prismjs/components/prism-json.js';
 import 'prismjs/components/prism-python.js';
+import 'prismjs/components/prism-tsx.js';
+
 
 // 自定义代码块组件，增加Prism高亮支持
 const CodeBlock = (props) => {
+
   // 处理语言类名 (如 language-js)
   const language = props.className
     ? props.className.replace('language-', '')
       .replace('prisma', 'markup') // 将 prisma语言替换为 js
     : 'text';
+
   // 获取代码内容
   const code = typeof props.children === 'string' ? props.children : '';
 
@@ -31,22 +35,12 @@ const CodeBlock = (props) => {
     }
   }
 
-  return React.createElement('div', {
-    className: 'myapp-code-block'
-  }, [
-    React.createElement('div', {
-      key: 'language',
-      className: 'myapp-code-block-language'
-    }, language),
-    React.createElement('pre', {
-      key: 'content',
-      className: 'myapp-code-block-content'
-    },
-      React.createElement('code', {
-        className: `language-${language}`,
-        dangerouslySetInnerHTML: { __html: highlightedCode }
-      }))
-  ]);
+  return React.createElement('div', { className: 'myapp-code-block' },
+    [
+      React.createElement('div', { key: 'language', className: 'myapp-code-block-language' }, language),
+      React.createElement('pre', { key: 'content', className: 'myapp-code-block-content' },
+        React.createElement('code', { className: `language-${language}`, dangerouslySetInnerHTML: { __html: highlightedCode } }))
+    ]);
 };
 
 export default CodeBlock;
