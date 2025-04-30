@@ -408,7 +408,7 @@ main()
 </ul><p class="myapp-p">:::tip</p><p class="myapp-p">如果您<a class="myapp-a" href="#scenario-pre-computed-ids-and-the-transaction-api" target="_blank" rel="noopener noreferrer">预先计算您的 ID，您可以在嵌套写入或使用 <code class="myapp-inlincode">$transaction([])</code> API 之间进行选择</a>。</p><p class="myapp-p">:::</p><h4>场景：注册流程</h4><p class="myapp-p">考虑 Slack 的注册流程，该流程：</p><ol>
 <li>创建一个团队</li>
 <li>向该团队添加一个用户，该用户自动成为该团队的管理员</li>
-</ol><p class="myapp-p">这个场景可以用以下 schema 表示 - 请注意，用户可以属于多个团队，团队可以有多个用户（多对多关系）：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">prisma</div><pre class="myapp-code-block-content"><code class="language-prisma">model Team {
+</ol><p class="myapp-p">这个场景可以用以下 schema 表示 - 请注意，用户可以属于多个团队，团队可以有多个用户（多对多关系）：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Team {
   id      Int    @id @default(autoincrement())
   name    String
   members User[] // 多个团队成员
@@ -599,7 +599,7 @@ model Email <span class="token punctuation">{</span>
 </blockquote><p class="myapp-p">随着 Prisma Client 的发展，<code class="myapp-inlincode">$transaction([])</code> API 的用例将越来越多地被更专门的批量操作（如 <code class="myapp-inlincode">createMany</code>）和嵌套写入所取代。</p><h4>何时使用 <code class="myapp-inlincode">$transaction([])</code> API</h4><p class="myapp-p">如果满足以下条件，请考虑使用 <code class="myapp-inlincode">$transaction([])</code> API：</p><ul>
 <li>✔ 您想更新一个包含不同类型记录的批次，例如电子邮件和用户。这些记录不需要以任何方式相关联。</li>
 <li>✔ 您想批量处理原始 SQL 查询 (<code class="myapp-inlincode">$executeRaw</code>) - 例如，对于 Prisma Client 尚不支持的功能。</li>
-</ul><h4>场景：隐私法规</h4><p class="myapp-p">GDPR 和其他隐私法规赋予用户要求组织删除其所有个人数据的权利。在以下示例 schema 中，一个 <code class="myapp-inlincode">User</code> 可以有许多帖子和私信：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">prisma</div><pre class="myapp-code-block-content"><code class="language-prisma">model User {
+</ul><h4>场景：隐私法规</h4><p class="myapp-p">GDPR 和其他隐私法规赋予用户要求组织删除其所有个人数据的权利。在以下示例 schema 中，一个 <code class="myapp-inlincode">User</code> 可以有许多帖子和私信：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model User {
   id              Int              @id @default(autoincrement())
   posts           Post[]
   privateMessages PrivateMessage[]
@@ -655,7 +655,7 @@ model PrivateMessage {
     <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
-</code></pre></div></pre><p class="myapp-p">将 <code class="myapp-inlincode">Team</code> 和 <code class="myapp-inlincode">User</code> 的 <code class="myapp-inlincode">id</code> 字段更改为 <code class="myapp-inlincode">String</code>（如果您不提供值，则会自动生成 UUID），而不是自动生成 ID。此示例使用 UUID：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">prisma</div><pre class="myapp-code-block-content"><code class="language-prisma">model Team {
+</code></pre></div></pre><p class="myapp-p">将 <code class="myapp-inlincode">Team</code> 和 <code class="myapp-inlincode">User</code> 的 <code class="myapp-inlincode">id</code> 字段更改为 <code class="myapp-inlincode">String</code>（如果您不提供值，则会自动生成 UUID），而不是自动生成 ID。此示例使用 UUID：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Team {
   //delete-next-line
   id      Int    @id @default(autoincrement())
   //add-next-line
@@ -757,7 +757,7 @@ model User {
 <li><strong>幂等</strong>：在数据库中使用电子邮件地址 <code class="myapp-inlincode">&quot;letoya@prisma.io&quot;</code> 更新或插入（upsert）用户。<code class="myapp-inlincode">User</code> 表<strong>确实</strong>强制执行唯一的电子邮件地址。如果您运行逻辑一次（创建一个用户）或十次（使用相同的输入更新现有用户），对数据库的影响是相同的。</li>
 </ul><p class="myapp-p">幂等性是您应该并且可以在应用程序中尽可能主动设计的东西。</p><h4>何时设计幂等 API</h4><ul>
 <li>✔ 您需要能够重试相同的逻辑而不会在数据库中产生不必要的副作用</li>
-</ul><h4>场景：升级 Slack 团队</h4><p class="myapp-p">您正在为 Slack 创建一个升级流程，允许团队解锁付费功能。团队可以在不同的计划之间进行选择，并按用户、按月付费。您使用 Stripe 作为支付网关，并扩展您的 <code class="myapp-inlincode">Team</code> 模型以存储 <code class="myapp-inlincode">stripeCustomerId</code>。订阅在 Stripe 中管理。</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">prisma</div><pre class="myapp-code-block-content"><code class="language-prisma">model Team {
+</ul><h4>场景：升级 Slack 团队</h4><p class="myapp-p">您正在为 Slack 创建一个升级流程，允许团队解锁付费功能。团队可以在不同的计划之间进行选择，并按用户、按月付费。您使用 Stripe 作为支付网关，并扩展您的 <code class="myapp-inlincode">Team</code> 模型以存储 <code class="myapp-inlincode">stripeCustomerId</code>。订阅在 Stripe 中管理。</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Team {
   id               Int     @id @default(autoincrement())
   name             String
   members          User[] // 'User' 应为 'members'
@@ -935,7 +935,7 @@ model User {
 <li>✔ 您预计这些并发请求之间的冲突将很少发生</li>
 </ul><p class="myapp-p">在具有大量并发请求的应用程序中避免锁定，可以使应用程序对负载更具弹性，并且总体上更具可伸缩性。虽然锁定本身并不坏，但在高并发环境中锁定可能导致意想不到的后果 - 即使您只锁定单个行，并且只锁定很短的时间。有关更多信息，请参阅：</p><ul>
 <li><a class="myapp-a" href="https://kendralittle.com/2016/02/04/why-rowlock-hints-can-make-queries-slower-and-blocking-worse-in-sql-server/" target="_blank" rel="noopener noreferrer">为什么 ROWLOCK 提示会使 SQL Server 中的查询变慢并加剧阻塞</a></li>
-</ul><h4>场景：在电影院预订座位</h4><p class="myapp-p">您正在为电影院创建一个预订系统。每部电影都有固定数量的座位。以下 schema 对电影和座位进行建模：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">prisma</div><pre class="myapp-code-block-content"><code class="language-prisma">model Seat {
+</ul><h4>场景：在电影院预订座位</h4><p class="myapp-p">您正在为电影院创建一个预订系统。每部电影都有固定数量的座位。以下 schema 对电影和座位进行建模：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Seat {
   id        Int   @id @default(autoincrement())
   userId    Int?  // 关联到 User 的外键
   claimedBy User? @relation(fields: [userId], references: [id]) // 关联字段
@@ -988,7 +988,7 @@ model User {
 <li>座位 3A 返回给 Ellen（<code class="myapp-inlincode">findFirst</code>）</li>
 <li>座位 3A 被 Sorcha 预订（<code class="myapp-inlincode">update</code>）</li>
 <li>座位 3A 被 Ellen 预订（<code class="myapp-inlincode">update</code> - 覆盖了 Sorcha 的预订）</li>
-</ol><p class="myapp-p">即使 Sorcha 已成功预订座位，系统最终仍存储 Ellen 的预订。要使用乐观并发控制解决此问题，请向座位添加一个 <code class="myapp-inlincode">version</code> 字段：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">prisma</div><pre class="myapp-code-block-content"><code class="language-prisma">model Seat {
+</ol><p class="myapp-p">即使 Sorcha 已成功预订座位，系统最终仍存储 Ellen 的预订。要使用乐观并发控制解决此问题，请向座位添加一个 <code class="myapp-inlincode">version</code> 字段：</p><pre><div class="myapp-code-block"><div class="myapp-code-block-language">markup</div><pre class="myapp-code-block-content"><code class="language-markup">model Seat {
   id        Int   @id @default(autoincrement())
   userId    Int?
   claimedBy User? @relation(fields: [userId], references: [id])

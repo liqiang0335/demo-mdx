@@ -6,22 +6,12 @@ import { renderToString } from 'react-dom/server';
 import { compile, run } from '@mdx-js/mdx';
 import * as runtime from 'react/jsx-runtime';
 import remarkGfm from 'remark-gfm';
-import Prism from 'prismjs';
 import templateHtml from "./comps/template-html.js";
 import TabItem from './comps/TabItem.js';
 import TabbedContent from './comps/TabbedContent.js';
 import TopBlock from './comps/TopBlock.js';
+import CodeBlock from './comps/CodeBlock.js';
 
-
-// 导入常用的语言支持
-import 'prismjs/components/prism-javascript.js';
-import 'prismjs/components/prism-jsx.js';
-import 'prismjs/components/prism-typescript.js';
-import 'prismjs/components/prism-css.js';
-import 'prismjs/components/prism-markup.js';
-import 'prismjs/components/prism-bash.js';
-import 'prismjs/components/prism-json.js';
-import 'prismjs/components/prism-python.js';
 
 /**
  * 项目说明:
@@ -40,41 +30,6 @@ const createAdvancedComponents = () => {
   const Quote = (props) => React.createElement('blockquote', {
     className: 'myapp-quote'
   }, props.children);
-
-  // 自定义代码块组件，增加Prism高亮支持
-  const CodeBlock = (props) => {
-    // 处理语言类名 (如 language-js)
-    const language = props.className ? props.className.replace('language-', '') : 'text';
-    // 获取代码内容
-    const code = typeof props.children === 'string' ? props.children : '';
-
-    // 使用Prism高亮代码
-    let highlightedCode = code;
-    if (language !== 'text' && Prism.languages[language]) {
-      try {
-        highlightedCode = Prism.highlight(code, Prism.languages[language], language);
-      } catch (error) {
-        console.warn(`代码高亮失败: ${language}`);
-      }
-    }
-
-    return React.createElement('div', {
-      className: 'myapp-code-block'
-    }, [
-      React.createElement('div', {
-        key: 'language',
-        className: 'myapp-code-block-language'
-      }, language),
-      React.createElement('pre', {
-        key: 'content',
-        className: 'myapp-code-block-content'
-      },
-        React.createElement('code', {
-          className: `language-${language}`,
-          dangerouslySetInnerHTML: { __html: highlightedCode }
-        }))
-    ]);
-  };
 
   // 自定义警告组件工厂
   const createCustomAlert = (type = 'info') => {
