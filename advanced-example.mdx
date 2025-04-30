@@ -1,0 +1,65 @@
+# 高级 MDXProvider 示例
+
+这个示例展示如何使用 **MDXProvider** 提供多种自定义组件，包括覆盖默认的 HTML 元素和添加全新的组件。
+
+## 自定义标题样式
+
+在这个文档中，所有标题都有自定义样式。包括：
+- 一级标题（蓝色带下划线）
+- 二级标题（绿色）
+- 三级标题（红色）
+
+### 三级标题示例
+
+## 自定义文本组件
+
+这是一个**段落**。注意它有自定义的行高。还可以使用 `内联代码` 样式。
+
+> 这是一个引用块，使用了自定义的引用组件。
+> 
+> 它有左侧边框和斜体样式。
+
+## 代码块示例
+
+```js
+// 这是一个代码块示例
+const greeting = 'Hello, MDX!';
+console.log(greeting);
+
+// 注意它显示了语言标签并有背景色
+function example() {
+  return '代码块被自定义组件美化了';
+}
+```
+
+## 链接示例
+
+[这是一个自定义样式的链接](https://mdxjs.com/)。它有特殊的颜色和底部虚线。
+
+## 内置组件
+
+<Highlight>
+  这是使用 Highlight 组件的文本，通过 MDXProvider 全局提供。
+</Highlight>
+
+<Wrapper>
+  这是使用 Wrapper 组件的内容，通过 MDXProvider 全局提供。
+</Wrapper>
+
+## 自定义警告组件
+
+<CustomAlert>
+  这是一个信息提示框（默认类型）。
+</CustomAlert>
+
+<CustomAlert type="success">
+  这是一个成功提示框。
+</CustomAlert>
+
+<CustomAlert type="warning">
+  这是一个警告提示框。
+</CustomAlert>
+
+<CustomAlert type="error">
+  这是一个错误提示框。
+</CustomAlert> 

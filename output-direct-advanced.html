@@ -1,0 +1,50 @@
+
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>MDX 高级直接组件示例</title>
+        </head>
+        <body>
+          <div style="font-family:system-ui, sans-serif;max-width:800px;margin:0 auto;padding:20px"><h1 style="color:darkblue;border-bottom:1px solid #eee">高级 MDX 组件示例</h1>
+<p style="line-height:1.6">这个示例展示了如何使用 <strong>MDXProvider</strong> 提供多种样式和组件。</p>
+<h2 style="color:darkgreen">GFM 支持</h2>
+<p style="line-height:1.6">MDX 通过 remark-gfm 插件支持 GitHub Flavored Markdown：</p>
+<table><thead><tr><th>功能</th><th>描述</th></tr></thead><tbody><tr><td>表格</td><td>像这样的表格</td></tr><tr><td>任务列表</td><td>- [x] 已完成任务<br/>- [ ] 未完成任务</td></tr><tr><td>删除线</td><td><del>删除的文本</del></td></tr><tr><td>自动链接</td><td><a href="https://mdxjs.com" style="color:#0077cc;text-decoration:none;border-bottom:1px dashed #0077cc" target="_blank" rel="noopener noreferrer">https://mdxjs.com</a></td></tr></tbody></table>
+<h2 style="color:darkgreen">自定义组件样式</h2>
+<h3 style="color:darkred">三级标题示例</h3>
+<p style="line-height:1.6">这个文档中，标题有不同的颜色：</p>
+<ul>
+<li>一级标题：蓝色带下划线</li>
+<li>二级标题：绿色</li>
+<li>三级标题：红色</li>
+</ul>
+<p style="line-height:1.6">使用 <code style="background-color:#f0f0f0;padding:2px 4px;border-radius:3px">内联代码</code> 也有特殊样式。</p>
+<blockquote style="border-left:4px solid #ccc;padding-left:16px;font-style:italic;margin:16px 0">
+<p style="line-height:1.6">这是一个引用块，使用了自定义样式。</p>
+<p style="line-height:1.6">它有左侧边框和斜体样式。</p>
+</blockquote>
+<h2 style="color:darkgreen">代码块示例</h2>
+<pre><div style="background-color:#f5f5f5;padding:16px;border-radius:4px;overflow:auto;margin:16px 0"><div style="font-size:12px;color:#666;margin-bottom:8px">js</div><pre>// 这是一个代码块示例
+const greeting = &#x27;Hello, MDX!&#x27;;
+console.log(greeting);
+
+// 注意它显示了语言标签并有背景色
+function example() {
+  return &#x27;代码块被自定义组件美化了&#x27;;
+}
+</pre></div></pre>
+<h2 style="color:darkgreen">链接示例</h2>
+<p style="line-height:1.6"><a href="https://mdxjs.com/" style="color:#0077cc;text-decoration:none;border-bottom:1px dashed #0077cc" target="_blank" rel="noopener noreferrer">这是一个自定义样式的链接</a> 它有特殊的颜色和底部虚线。</p>
+<h2 style="color:darkgreen">内置组件</h2>
+<div style="background-color:yellow;padding:10px;border-radius:5px;margin:10px 0"><p style="line-height:1.6">这是使用 Highlight 组件的文本，通过 MDXProvider 全局提供。</p></div>
+<div style="border:1px solid #ccc;padding:10px;border-radius:5px;margin:10px 0"><p style="line-height:1.6">这是使用 Wrapper 组件的内容，通过 MDXProvider 全局提供。</p></div>
+<h2 style="color:darkgreen">自定义警告组件</h2>
+<div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#e8f4fd;border-color:#b3d7ff"><p style="line-height:1.6">这是一个信息提示框（默认类型）。</p></div>
+<div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#e9fbe8;border-color:#c3e6cb"><p style="line-height:1.6">这是一个成功提示框。</p></div>
+<div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#fff9e6;border-color:#ffeeba"><p style="line-height:1.6">这是一个警告提示框。</p></div>
+<div style="padding:12px 20px;border-left:4px solid;margin:16px 0;border-radius:3px;background-color:#feeae9;border-color:#f5c6cb"><p style="line-height:1.6">这是一个错误提示框。</p></div></div>
+        </body>
+      </html>
+    

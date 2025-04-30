@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+## 规则
+
+1.使用 pnpm 安装依赖
