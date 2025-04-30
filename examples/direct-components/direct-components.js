@@ -6,7 +6,13 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import * as runtime from 'react/jsx-runtime';
 
-// 获取当前文件所在目录路径
+/**
+ * 直接组件示例
+ * 使用 MDX 直接组件示例
+ * 这个示例展示了如何直接在 MDX 中使用组件，而不需要通过 MDXProvider 提供。
+ */
+const SOURCE = 'source.mdx';
+const OUTPUT = 'output.html';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // 创建无JSX语法的组件
@@ -55,10 +61,18 @@ const createComponents = () => {
   };
 };
 
+/**
+ * 主函数
+ * 读取 MDX 文件内容
+ * 编译 MDX 内容（不使用 providerImportSource 选项）
+ * 运行编译后的代码
+ * 创建组件并直接传递给 Content
+ * 保存结果到文件
+ */
 async function main() {
   try {
     // 读取 MDX 文件内容
-    const mdxContent = await fs.readFile(path.join(__dirname, 'example-content.mdx'), 'utf-8');
+    const mdxContent = await fs.readFile(path.join(__dirname, SOURCE), 'utf-8');
 
     // 编译 MDX 内容（不使用 providerImportSource 选项）
     const compiledCode = String(await compile(mdxContent, {
@@ -81,7 +95,7 @@ async function main() {
     console.log(result);
 
     // 保存结果到文件
-    await fs.writeFile(path.join(__dirname, 'output-direct.html'), `
+    await fs.writeFile(path.join(__dirname, OUTPUT), `
       <!DOCTYPE html>
       <html>
         <head>
@@ -95,7 +109,7 @@ async function main() {
       </html>
     `);
 
-    console.log('已生成 HTML 文件: output-direct.html');
+    console.log(`已生成 HTML 文件: ${OUTPUT}`);
   } catch (error) {
     console.error('发生错误:', error);
   }

@@ -11,12 +11,9 @@
     "provider:advanced": "node --require ./register-provider.js advanced-provider-example.js",
     "cli:basic": "node example-cli.js",
     "cli:advanced": "node advanced-cli.js",
-    "babel:example": "node -r ./babel.register.js babel-example.js",
-    "esm:example": "node pure-esm-example.js",
-    "esm:advanced": "node pure-esm-advanced.js",
-    "direct": "node direct-components.js",
-    "direct:advanced": "node direct-advanced.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "babel:example": "node --require ./babel.register.cjs babel-example.js",
+    "direct": "node examples/direct-components/direct-components.js",
+    "direct:advanced": "node examples/direct-advanced/direct-advanced.js"
   },
   "keywords": [],
   "author": "",

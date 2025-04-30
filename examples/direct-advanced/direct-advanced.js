@@ -4,11 +4,18 @@ import { fileURLToPath } from 'node:url';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { compile, run } from '@mdx-js/mdx';
-import { MDXProvider } from '@mdx-js/react';
 import * as runtime from 'react/jsx-runtime';
 import remarkGfm from 'remark-gfm';
 
-// 获取当前文件所在目录路径
+/**
+ * 项目说明:
+ * 这是一个高级MDX处理工具，用于将MDX内容转换为HTML。
+ * 该工具提供了自定义组件支持，包括引用块、代码块和警告提示等。
+ * 它使用React服务端渲染和MDX编译器来处理Markdown和JSX混合内容。
+ * 支持remark-gfm插件，可以处理GitHub风格的Markdown扩展语法。
+ */
+const SOURCE = 'source.mdx';
+const OUTPUT = 'output.html';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // 创建无JSX语法的高级组件
@@ -149,12 +156,12 @@ const createAdvancedComponents = () => {
 async function main() {
   try {
     // 读取 MDX 文件内容
-    const mdxContent = await fs.readFile(path.join(__dirname, 'advanced-content.mdx'), 'utf-8');
+    const mdxContent = await fs.readFile(path.join(__dirname, SOURCE), 'utf-8');
 
     // 编译 MDX 内容
     const compiledCode = String(await compile(mdxContent, {
       outputFormat: 'function-body',
-      providerImportSource: '@mdx-js/react',
+      // 不使用 providerImportSource
       remarkPlugins: [remarkGfm] // 添加 GitHub Flavored Markdown 支持
     }));
 
@@ -164,7 +171,7 @@ async function main() {
       baseUrl: import.meta.url
     });
 
-    // 使用 MDXProvider 提供组件
+    // 创建组件并直接传递给 Content
     const components = createAdvancedComponents();
     const container = React.createElement('div', {
       style: {
@@ -173,22 +180,20 @@ async function main() {
         margin: '0 auto',
         padding: '20px'
       }
-    }, React.createElement(Content));
+    }, React.createElement(Content, { components }));
 
-    const result = renderToString(
-      React.createElement(MDXProvider, { components }, container)
-    );
+    const result = renderToString(container);
 
     console.log(result);
 
     // 保存结果到文件
-    await fs.writeFile(path.join(__dirname, 'output-advanced.html'), `
+    await fs.writeFile(path.join(__dirname, OUTPUT), `
       <!DOCTYPE html>
       <html>
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>MDX Provider 高级示例</title>
+          <title>MDX 高级直接组件示例</title>
         </head>
         <body>
           ${result}
@@ -196,7 +201,7 @@ async function main() {
       </html>
     `);
 
-    console.log('已生成 HTML 文件: output-advanced.html');
+    console.log(`已生成 HTML 文件: ${OUTPUT}`);
   } catch (error) {
     console.error('发生错误:', error);
   }
