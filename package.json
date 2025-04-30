@@ -4,8 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "direct": "node examples/direct-components/direct-components.js",
-    "direct:advanced": "node examples/direct-advanced/direct-advanced.js"
+    "direct": "node examples/direct-components/index.js",
+    "direct:advanced": "node examples/direct-advanced/index.js"
   },
   "keywords": [],
   "author": "",
