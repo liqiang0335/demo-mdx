@@ -172,3 +172,7 @@ th {
   list-style-type: decimal;
   background-color: #f0f0f0;
 }
+
+.myapp-li {
+  background-color: #f0f0f0;
+}
