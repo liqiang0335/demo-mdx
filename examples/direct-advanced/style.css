@@ -1,0 +1,119 @@
+/* 通用样式 */
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 标题样式 */
+.myapp-h1 {
+  color: darkblue;
+  border-bottom: 1px solid #eee;
+}
+
+.myapp-h2 {
+  color: darkgreen;
+}
+
+.myapp-h3 {
+  color: darkred;
+}
+
+/* 段落样式 */
+.myapp-p {
+  line-height: 1.6;
+}
+
+/* 链接样式 */
+.myapp-a {
+  color: #0077cc;
+  text-decoration: none;
+  border-bottom: 1px dashed #0077cc;
+}
+
+/* 引用块样式 */
+.myapp-quote {
+  border-left: 4px solid #ccc;
+  padding-left: 16px;
+  font-style: italic;
+  margin: 16px 0;
+}
+
+/* 内联代码样式 */
+.myapp-inlincode {
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* 代码块容器样式 */
+.myapp-code-block {
+  background-color: #282c34;
+  padding: 16px;
+  border-radius: 4px;
+  overflow: auto;
+  margin: 16px 0;
+}
+
+.myapp-code-block-language {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+  font-family: monospace;
+}
+
+.myapp-code-block-content {
+  margin: 0;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.myapp-code-block-content code {
+  display: block;
+  color: #e5e7eb;
+}
+
+/* 自定义组件样式 */
+.myapp-wrapper {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.myapp-highlight {
+  background-color: yellow;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+/* 警告提示样式 */
+.myapp-admonition {
+  padding: 12px 20px;
+  border-left: 4px solid;
+  margin: 16px 0;
+  border-radius: 3px;
+}
+
+.myapp-admonition.info {
+  background-color: #e8f4fd;
+  border-color: #b3d7ff;
+}
+
+.myapp-admonition.success {
+  background-color: #e9fbe8;
+  border-color: #c3e6cb;
+}
+
+.myapp-admonition.warning {
+  background-color: #fff9e6;
+  border-color: #ffeeba;
+}
+
+.myapp-admonition.error {
+  background-color: #feeae9;
+  border-color: #f5c6cb;
+}

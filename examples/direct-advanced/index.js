@@ -7,6 +7,8 @@ import { compile, run } from '@mdx-js/mdx';
 import * as runtime from 'react/jsx-runtime';
 import remarkGfm from 'remark-gfm';
 import Prism from 'prismjs';
+import templateHtml from "./template-html";
+
 
 // 导入常用的语言支持
 import 'prismjs/components/prism-javascript.js';
@@ -23,7 +25,7 @@ import 'prismjs/components/prism-python.js';
  * 这是一个高级MDX处理工具，用于将MDX内容转换为HTML。
  * 该工具提供了自定义组件支持，包括引用块、代码块和警告提示等。
  * 它使用React服务端渲染和MDX编译器来处理Markdown和JSX混合内容。
- * 支持remark-gfm插件，可以处理GitHub风格的Markdown扩展语法。
+ * 支持remark-gfm插件，可以处理GitHub风格的Markdown扩展语法。 
  */
 const SOURCE = 'source.mdx';
 const OUTPUT = 'output.html';
@@ -200,113 +202,7 @@ async function main() {
     console.log(result);
 
     // 保存结果到文件
-    await fs.writeFile(path.join(__dirname, OUTPUT), `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>MDX 高级直接组件示例</title>
-          <style>
-            code[class*="language-"],
-            pre[class*="language-"] {
-              color: #ccc;
-              background: none;
-              font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-              font-size: 1em;
-              text-align: left;
-              white-space: pre;
-              word-spacing: normal;
-              word-break: normal;
-              word-wrap: normal;
-              line-height: 1.5;
-              tab-size: 4;
-              hyphens: none;
-            }
-            
-            /* Prism 高亮样式 */
-            .token.comment,
-            .token.block-comment,
-            .token.prolog,
-            .token.doctype,
-            .token.cdata {
-              color: #999;
-            }
-
-            .token.punctuation {
-              color: #ccc;
-            }
-
-            .token.tag,
-            .token.attr-name,
-            .token.namespace,
-            .token.deleted {
-              color: #e2777a;
-            }
-
-            .token.function-name {
-              color: #6196cc;
-            }
-
-            .token.boolean,
-            .token.number,
-            .token.function {
-              color: #f08d49;
-            }
-
-            .token.property,
-            .token.class-name,
-            .token.constant,
-            .token.symbol {
-              color: #f8c555;
-            }
-
-            .token.selector,
-            .token.important,
-            .token.atrule,
-            .token.keyword,
-            .token.builtin {
-              color: #cc99cd;
-            }
-
-            .token.string,
-            .token.char,
-            .token.attr-value,
-            .token.regex,
-            .token.variable {
-              color: #7ec699;
-            }
-
-            .token.operator,
-            .token.entity,
-            .token.url {
-              color: #67cdcc;
-            }
-
-            .token.important,
-            .token.bold {
-              font-weight: bold;
-            }
-
-            .token.italic {
-              font-style: italic;
-            }
-
-            .token.entity {
-              cursor: help;
-            }
-
-            .token.inserted {
-              color: green;
-            }
-          </style>
-        </head>
-        <body>
-          ${result}
-        </body>
-      </html>
-    `);
-
+    await fs.writeFile(path.join(__dirname, OUTPUT), templateHtml(result));
     console.log(`已生成 HTML 文件: ${OUTPUT}`);
   } catch (error) {
     console.error('发生错误:', error);
