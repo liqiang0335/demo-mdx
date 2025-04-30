@@ -4,14 +4,6 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "node build.js",
-    "start": "node dist/render.js",
-    "example": "node --require ./register.js main.js",
-    "provider:basic": "node --require ./register-provider.js mdx-provider-example.js",
-    "provider:advanced": "node --require ./register-provider.js advanced-provider-example.js",
-    "cli:basic": "node example-cli.js",
-    "cli:advanced": "node advanced-cli.js",
-    "babel:example": "node --require ./babel.register.cjs babel-example.js",
     "direct": "node examples/direct-components/direct-components.js",
     "direct:advanced": "node examples/direct-advanced/direct-advanced.js"
   },
