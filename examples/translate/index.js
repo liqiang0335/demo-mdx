@@ -21,26 +21,26 @@ const createAdvancedComponents = () => {
 
   // 自定义警告组件工厂
   const createCustomAlert = (type = 'info') => {
-    return (props) => React.createElement('div', { className: `myapp-admonition ${props.type || type}` }, props.children);
+    return (props) => React.createElement('div', { className: `cl-admonition ${props.type || type}` }, props.children);
   };
 
   return {
     // HTML 元素映射
-    h1: (props) => React.createElement('h1', { className: 'myapp-h1', ...props }, props.children),
-    h2: (props) => React.createElement('h2', { className: 'myapp-h2', ...props }, props.children),
-    h3: (props) => React.createElement('h3', { className: 'myapp-h3', ...props }, props.children),
-    p: (props) => React.createElement('p', { className: 'myapp-p', ...props }, props.children),
-    ol: (props) => React.createElement('ol', { className: 'myapp-ol', ...props }, props.children),
-    ul: (props) => React.createElement('ul', { className: 'myapp-ul', ...props }, props.children),
-    li: (props) => React.createElement('li', { className: 'myapp-li', ...props }, props.children),
-    a: (props) => React.createElement('a', { className: 'myapp-a', href: props.href, target: "_blank", rel: "noopener noreferrer", ...props }, props.children),
-    blockquote: (props) => React.createElement('blockquote', { className: 'myapp-quote' }, props.children),
+    h1: (props) => React.createElement('h1', { className: 'cl-h1', ...props }, props.children),
+    h2: (props) => React.createElement('h2', { className: 'cl-h2', ...props }, props.children),
+    h3: (props) => React.createElement('h3', { className: 'cl-h3', ...props }, props.children),
+    p: (props) => React.createElement('p', { className: 'cl-p', ...props }, props.children),
+    ol: (props) => React.createElement('ol', { className: 'cl-ol', ...props }, props.children),
+    ul: (props) => React.createElement('ul', { className: 'cl-ul', ...props }, props.children),
+    li: (props) => React.createElement('li', { className: 'cl-li', ...props }, props.children),
+    a: (props) => React.createElement('a', { className: 'cl-a', href: props.href, target: "_blank", rel: "noopener noreferrer", ...props }, props.children),
+    blockquote: (props) => React.createElement('blockquote', { className: 'cl-quote' }, props.children),
     code: (props) => {
-      if (!props.className) return React.createElement('code', { className: 'myapp-inlincode', ...props }, props.children); // 内联代码
+      if (!props.className) return React.createElement('code', { className: 'cl-inlincode', ...props }, props.children); // 内联代码
       return React.createElement(CodeBlock, props, props.children);   // 代码块
     },
-    Wrapper: (props) => React.createElement('div', { className: 'myapp-wrapper', ...props }, props.children),
-    Highlight: (props) => React.createElement('div', { className: 'myapp-highlight', ...props }, props.children),
+    Wrapper: (props) => React.createElement('div', { className: 'cl-wrapper', ...props }, props.children),
+    Highlight: (props) => React.createElement('div', { className: 'cl-highlight', ...props }, props.children),
     Admonition: (props) => {
       const CustomAlertComponent = createCustomAlert(props.type);
       return React.createElement(CustomAlertComponent, props, props.children);
@@ -73,7 +73,7 @@ async function main(source, output) {
     const { default: Content } = await run(compiledCode, { ...runtime, baseUrl: import.meta.url });
     // 创建组件并直接传递给 Content
     const container = React.createElement('div', {
-      className: 'myapp-container'
+      className: 'cl-container'
     }, React.createElement(Content, { components: createAdvancedComponents() }));
 
     const result = renderToString(container);

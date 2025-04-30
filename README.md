@@ -8,7 +8,7 @@
 ## 提示词
 
 ```text
-将 tip 包裹的内容转换为 myapp-admonition 组件包裹, 示例:
+将 tip 包裹的内容转换为 cl-admonition 组件包裹, 示例:
 
 :::tip
 {内容}
