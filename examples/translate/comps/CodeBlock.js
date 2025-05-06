@@ -37,10 +37,10 @@ const CodeBlock = (props) => {
     }
   }
 
-  return React.createElement('div', { className: 'myapp-code-block' },
+  return React.createElement('div', { className: 'cl-code-block' },
     [
-      React.createElement('div', { key: 'language', className: 'myapp-code-block-language' }, language),
-      React.createElement('pre', { key: 'content', className: 'myapp-code-block-content' },
+      React.createElement('div', { key: 'language', className: 'cl-code-block-language' }, language),
+      React.createElement('pre', { key: 'content', className: 'cl-code-block-content' },
         React.createElement('code', { className: `language-${language}`, dangerouslySetInnerHTML: { __html: highlightedCode } }))
     ]);
 };
