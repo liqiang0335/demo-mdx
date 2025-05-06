@@ -5,18 +5,10 @@
   - direct-advanced 直接高级组件示例
   - node-loader 使用 node-loader 示例
 
-## 提示词
+## 转换JSX
 
-```text
-将 tip 包裹的内容转换为 cl-admonition 组件包裹, 示例:
+```bash
+pnpm add -D @babel/core @babel/cli @babel/preset-react
 
-:::tip
-{内容}
-:::
-
-转换为
-
-<Admonition type="tip">
-{内容}
-</Admonition>
+npx babel  examples/jsx/app.jsx --out-file examples/jsx/app.2.js
 ```
